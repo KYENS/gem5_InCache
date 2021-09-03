@@ -97,6 +97,9 @@ AbstractMemory::initState()
                     system()->cacheLineSize());
 
     panic_if(!image.write(proxy), "%s: Unable to write image.");
+    //@BCDRAM start
+    BC_paddr_start = range.start();
+    //@BCDRAM end 
 }
 
 void

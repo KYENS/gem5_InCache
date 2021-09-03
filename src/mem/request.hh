@@ -327,6 +327,8 @@ class Request
     };
 
   private:
+    bool BC_isNDP=false;
+    int BC_qid=0;
 
     /**
      * The physical address of the request. Valid only if validPaddr
@@ -512,7 +514,31 @@ class Request
         atomicOpFunctor = std::move(amo_op);
         _localAccessor = nullptr;
     }
+    //@BCDRAM start
+    int
+    BC_GetQID() const
+    {
+        return BC_qid;
+    }
 
+    bool
+    BC_IsNDP() const
+    {
+        return BC_isNDP;
+    }
+
+    void
+    BC_SetQID(int qid) 
+    {
+	BC_qid = qid;
+    }
+
+    void
+    BC_SetNDP() 
+    {
+	BC_isNDP = true;
+    }
+    //@BCDRAM end
     /**
      * Set just the physical address. This usually used to record the
      * result of a translation.

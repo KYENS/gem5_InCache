@@ -332,7 +332,6 @@ Cache::handleTimingReqMiss(PacketPtr pkt, CacheBlk *blk, Tick forward_time,
             allocateWriteBuffer(pkt, forward_time);
         } else {
             assert(pkt->isRead());
-
             // uncacheable accesses always allocate a new MSHR
 
             // Here we are using forward_time, modelling the latency of
@@ -530,7 +529,9 @@ Cache::createMissPacket(PacketPtr cpu_pkt, CacheBlk *blk,
             (force_clean_rsp ? MemCmd::ReadCleanReq : MemCmd::ReadSharedReq);
     }
     PacketPtr pkt = new Packet(cpu_pkt->req, cmd, blkSize);
-
+    //@BCDRAM start
+    if(pkt->BC_IsNDP() )std::cout<<"curTick()-"<<curTick()<<"-"<< name()<< "::src/mem/cache/cache.cc::addr,"<<pkt->getAddr() <<",size:"<<pkt->getSize()<<std::endl;
+    //@BCDRAM end 
     // if there are upstream caches that have already marked the
     // packet as having sharers (not passing writable), pass that info
     // downstream

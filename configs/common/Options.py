@@ -112,6 +112,8 @@ def addNoISAOptions(parser):
                        help="Enable low-power states in DRAMInterface")
     parser.add_option("--mem-channels-intlv", type="int", default=0,
                       help="Memory channels interleave")
+    parser.add_option("--ramulator-config", type="string", dest="ramulator_config",
+                      help="Specify Ramulator configuration file, overrides other --mem-XXX options")
 
 
     parser.add_option("--memchecker", action="store_true")

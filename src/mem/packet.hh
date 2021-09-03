@@ -331,6 +331,12 @@ class Packet : public Printable
   public:
     typedef MemCmd::Command Command;
 
+    //@BCDRAM start
+    int BC_GetQID() const;
+    bool BC_IsNDP() const;
+    void BC_SetNDP();
+    void BC_SetQID(int qid);
+    //@BCDRAM end
     /// The command field of the packet.
     MemCmd cmd;
 
@@ -353,6 +359,10 @@ class Packet : public Printable
     /// physical, depending on the system configuration.
     Addr addr;
 
+    //@BCDRAM start
+    bool BC_isNDP=false;
+    int BC_qid=0;
+    //@BCDRAM end
     /// True if the request targets the secure memory space.
     bool _isSecure;
 
@@ -836,6 +846,16 @@ class Packet : public Printable
             flags.set(VALID_ADDR);
             _isSecure = req->isSecure();
         }
+	//@BCDRAM start
+	if (req->BC_IsNDP() ){
+            flags.set(VALID_ADDR);
+	    addr = req-> getVaddr();
+           // std::cout<< "isSecure:"<<req->isSecure()<<", Vaddr"<<addr<<", has valid address"<<flags.isSet(VALID_ADDR)<<std::endl;
+	    BC_SetNDP();
+	   // std::cout<<"BUILDING NDP packet\n";
+	}
+
+	//@BCDRAM end
 
         /**
          * hardware transactional memory
@@ -877,6 +897,12 @@ class Packet : public Printable
             flags.set(VALID_ADDR);
             _isSecure = req->isSecure();
         }
+	if (req->BC_IsNDP() ){
+            addr = 0x12345680;
+	    BC_SetNDP();
+            flags.set(VALID_ADDR);
+            _isSecure = req->isSecure();
+	}
         size = _blkSize;
         flags.set(VALID_SIZE);
     }

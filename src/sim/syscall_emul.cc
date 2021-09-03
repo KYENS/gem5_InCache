@@ -205,6 +205,9 @@ exitImpl(SyscallDesc *desc, ThreadContext *tc, bool group, int status)
     for (auto &system: sys->systemList)
         activeContexts += system->threads.numRunning();
 
+    //@BCDRAM start
+    
+    //@BCDRAM end
     if (activeContexts == 0) {
         /**
          * Even though we are terminating the final thread context, dist-gem5

@@ -41,7 +41,8 @@ from common import ObjectList
 from common import HMC
 
 def create_mem_intf(intf, r, i, nbr_mem_ctrls, intlv_bits, intlv_size,
-                    xor_low_bit):
+                    xor_low_bit, options):
+
     """
     Helper function for creating a single memoy controller from the given
     options.  This function is invoked multiple times in config_mem function
@@ -66,7 +67,16 @@ def create_mem_intf(intf, r, i, nbr_mem_ctrls, intlv_bits, intlv_size,
     interface = intf()
 
     # Only do this for DRAMs
-    if issubclass(intf, m5.objects.DRAMInterface):
+     # gagan : ramulator integration
+    if issubclass(intf, m5.objects.Ramulator):
+        if not options.ramulator_config:
+            fatal("--mem-type=ramulator require --ramulator-config option")
+#        interface.real_warm_up = options.real_warm_up
+        interface.config_file = options.ramulator_config
+        interface.output_dir = m5.options.outdir + "/"
+        print("Ramulator system configuration file = ", options.ramulator_config)
+        interface.num_cpus = options.num_cpus
+    elif issubclass(intf, m5.objects.DRAMInterface):
         # If the channel bits are appearing after the column
         # bits, we need to add the appropriate number of bits
         # for the row buffer size
@@ -203,7 +213,8 @@ def config_mem(options, system):
             if opt_mem_type and (not opt_nvm_type or range_iter % 2 != 0):
                 # Create the DRAM interface
                 dram_intf = create_mem_intf(intf, r, i, nbr_mem_ctrls,
-                                    intlv_bits, intlv_size, opt_xor_low_bit)
+                                    intlv_bits, intlv_size, opt_xor_low_bit, options)
+
 
                 # Set the number of ranks based on the command-line
                 # options if it was explicitly set
@@ -221,7 +232,11 @@ def config_mem(options, system):
                         "latency to 1ns.")
 
                 # Create the controller that will drive the interface
-                if opt_mem_type == "HMC_2500_1x32":
+                if opt_mem_type == "Ramulator":
+                    print("MEMORY TYPE::",opt_mem_type)
+                    print(type(dram_intf))
+                    mem_ctrl = dram_intf
+                elif opt_mem_type == "HMC_2500_1x32":
                     # The static latency of the vault controllers is estimated
                     # to be smaller than a full DRAM channel controller
                     mem_ctrl = m5.objects.MemCtrl(min_writes_per_switch = 8,
@@ -234,7 +249,10 @@ def config_mem(options, system):
 
                 # Hookup the controller to the interface and add to the list
                 if opt_mem_type != "SimpleMemory":
-                    mem_ctrl.dram = dram_intf
+                    if opt_mem_type != "Ramulator":
+                       mem_ctrl.dram = dram_intf
+
+
 
                 mem_ctrls.append(mem_ctrl)
 

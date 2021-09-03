@@ -108,6 +108,12 @@ class BaseCache : public ClockedObject
         NUM_BLOCKED_CAUSES
     };
 
+    //@BCDRAM start
+    uint8_t* BC_translateAddr(uint64_t vaddr);
+    void BC_processInCache();
+    void BC_InCacheCheck();
+    EventFunctionWrapper BC_InCacheCheckEvent;
+    //@BCDRAM end
   protected:
 
     /**

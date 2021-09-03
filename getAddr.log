@@ -1,0 +1,711 @@
+ext/nomali/lib/mmu.cc:        return spaces[getAddrSpaceNo(addr)].readReg(getAddrSpaceAddr(addr));
+ext/nomali/lib/mmu.cc:            AddrSpace &as(spaces[getAddrSpaceNo(addr)]);
+ext/nomali/lib/mmu.cc:            as.writeReg(getAddrSpaceAddr(addr), value);
+ext/nomali/lib/mmu.cc:        return spaces[getAddrSpaceNo(addr)].readRegRaw(getAddrSpaceAddr(addr));
+ext/nomali/lib/mmu.cc:        spaces[getAddrSpaceNo(addr)].writeRegRaw(getAddrSpaceAddr(addr), value);
+ext/nomali/lib/regutils.hh:getAddrSpaceNo(const RegAddr &addr)
+ext/nomali/lib/regutils.hh:getAddrSpaceAddr(const RegAddr &addr)
+ext/nomali/lib/regutils.hh:    const unsigned as_no(getAddrSpaceNo(addr));
+ext/sst/ExtMaster.cc:        for (auto range : getAddrRanges()) {
+ext/sst/ExtMaster.cc:    auto req = std::make_shared<Request>(ev->getAddr(), ev->getSize(), flags, 0);
+ext/sst/ExtMaster.cc:    for (auto range : getAddrRanges()) {
+ext/sst/ExtSlave.cc:        Addr a = pkt->getAddr();
+ext/sst/ExtSlave.cc:    auto ev = new MemEvent(comp, pkt->getAddr(), pkt->getAddr(), cmd);
+ext/sst/ExtSlave.cc:            event->getAddr(), event->getSize(), 0, 0);
+src/arch/arm/fastmodel/GIC/gic.hh:    AddrRangeList getAddrRanges() const override { return AddrRangeList(); }
+src/arch/arm/self_debug.cc:    Addr pc_tocmp = getAddrfromReg(tc);
+src/arch/arm/self_debug.cc:    Addr pc_tocmp = getAddrfromReg(tc);
+src/arch/arm/self_debug.cc:    Addr addr_tocmp = getAddrfromReg(tc);
+src/arch/arm/self_debug.hh:    getAddrfromReg(ThreadContext *tc) const
+src/arch/arm/self_debug.hh:    getAddrfromReg(ThreadContext *tc)
+src/arch/arm/semihosting.cc:            // Use getAddr() to skip the func number in the first slot.
+src/arch/arm/semihosting.cc:            getAddr();
+src/arch/arm/semihosting.cc:            // Use getAddr() to skip the func number in the first slot.
+src/arch/arm/semihosting.cc:            getAddr();
+src/arch/arm/semihosting.hh:            getAddr()
+src/arch/arm/semihosting.hh:                state.getAddr(), sizeof(typename Abi::State::ArgType));
+src/arch/arm/tracers/tarmac_record.cc:                                           getAddr(), getIntData())
+src/arch/arm/tracers/tarmac_record_v8.cc:                                             getAddr(), getIntData())
+src/arch/arm/locked_mem.hh:            xc->getCpuPtr()->name(),pkt->getAddr(),
+src/arch/arm/locked_mem.hh:    Addr snoop_addr = pkt->getAddr() & cacheBlockMask;
+src/arch/mips/locked_mem.hh:    Addr snoop_addr = pkt->getAddr() & cacheBlockMask;
+src/arch/power/insts/branch.cc:    return targetAddr;
+src/arch/power/insts/branch.cc:    if (symtab && (it = symtab->find(targetAddr)) != symtab->end())
+src/arch/power/insts/branch.cc:        ccprintf(ss, "%#x", targetAddr);
+src/arch/power/insts/branch.cc:    return targetAddr;
+src/arch/power/insts/branch.cc:    if (symtab && (it = symtab->find(targetAddr)) != symtab->end())
+src/arch/power/insts/branch.cc:        ccprintf(ss, "%#x", targetAddr);
+src/arch/power/insts/branch.hh:    uint32_t targetAddr;
+src/arch/power/insts/branch.hh:          targetAddr(machInst.li << 2)
+src/arch/power/insts/branch.hh:        if (targetAddr & 0x2000000) {
+src/arch/power/insts/branch.hh:            targetAddr |= 0xfc000000;
+src/arch/power/insts/branch.hh:    uint32_t targetAddr;
+src/arch/power/insts/branch.hh:          targetAddr(machInst.bd << 2)
+src/arch/power/insts/branch.hh:        if (targetAddr & 0x8000) {
+src/arch/power/insts/branch.hh:            targetAddr |= 0xffff0000;
+src/arch/power/isa/decoder.isa:            1: bca({{ NIA = targetAddr; }});
+src/arch/power/isa/decoder.isa:            1: ba({{ NIA = targetAddr; }});
+src/arch/riscv/locked_mem.hh:    Addr snoop_addr = pkt->getAddr() & cacheBlockMask;
+src/arch/riscv/pagetable_walker.cc:                level, oldRead->getAddr(), pte);
+src/arch/sparc/tlb.cc:    Addr va = pkt->getAddr();
+src/arch/sparc/tlb.cc:         (uint32_t)pkt->req->getArchFlags(), pkt->getAddr());
+src/arch/sparc/tlb.cc:    Addr va = pkt->getAddr();
+src/arch/sparc/tlb.cc:            (uint32_t)pkt->req->getArchFlags(), pkt->getAddr(), data);
+src/arch/x86/isa/decoder/two_byte_opcodes.isa:                                         xc->getAddrMonitor()->vAddr,
+src/arch/x86/isa/formats/monitor_mwait.isa:        initiateMemRead(xc, traceData, xc->getAddrMonitor()->vAddr, s, f);
+src/arch/x86/interrupts.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/arch/x86/interrupts.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/arch/x86/interrupts.cc:    Addr offset = pkt->getAddr() - x86InterruptAddress(initialApicId, 0);
+src/arch/x86/interrupts.cc:X86ISA::Interrupts::getAddrRanges() const
+src/arch/x86/interrupts.hh:    AddrRangeList getAddrRanges() const;
+src/cpu/checker/cpu.hh:    AddressMonitor *getAddrMonitor() override
+src/cpu/minor/exec_context.hh:    AddressMonitor *getAddrMonitor() override
+src/cpu/minor/execute.cc:            *inst, packet->getAddr(), packet->getSize());
+src/cpu/minor/lsq.cc:        *(request->inst), response->getAddr(),
+src/cpu/o3/lsq_impl.hh:                pkt->getAddr());
+src/cpu/o3/lsq_impl.hh:                pkt->getAddr());
+src/cpu/o3/lsq_impl.hh:    DPRINTF(LSQ, "received pkt for addr:%#x %s\n", pkt->getAddr(),
+src/cpu/o3/lsq_impl.hh:                pkt->getAddr());
+src/cpu/o3/lsq_impl.hh:              _packets.back()->getAddr(),
+src/cpu/o3/lsq_impl.hh:                  _mainPacket->getAddr(),
+src/cpu/o3/lsq_impl.hh:                  _packets.back()->getAddr(),
+src/cpu/o3/lsq_unit.hh:                      data_pkt->getAddr(),
+src/cpu/o3/lsq_unit_impl.hh:                pkt->getAddr(), htmFailureToStr(htm_rc),
+src/cpu/o3/lsq_unit_impl.hh:                inst->pcState(), pkt->getAddr(),
+src/cpu/o3/lsq_unit_impl.hh:    DPRINTF(LSQUnit, "Got snoop for address %#x\n", pkt->getAddr());
+src/cpu/o3/lsq_unit_impl.hh:    Addr invalidate_addr = pkt->getAddr() & cacheBlockMask;
+src/cpu/o3/lsq_unit_impl.hh:                        pkt->getAddr(), ld_inst->seqNum);
+src/cpu/o3/lsq_unit_impl.hh:                        pkt->getAddr(), ld_inst->seqNum);
+src/cpu/pred/simple_indirect.cc:    hist_entry.targetAddr = target.instAddr();
+src/cpu/pred/simple_indirect.cc:            hash ^= (t_info.pathHist[i].targetAddr >>
+src/cpu/pred/simple_indirect.hh:            : pcAddr(br_addr), targetAddr(tgt_addr), seqNum(seq_num) { }
+src/cpu/pred/simple_indirect.hh:        Addr targetAddr;
+src/cpu/simple/atomic.cc:            __func__, pkt->getAddr(), pkt->cmdString());
+src/cpu/simple/atomic.cc:            __func__, pkt->getAddr(), pkt->cmdString());
+src/cpu/simple/atomic.cc:                pkt->getAddr());
+src/cpu/simple/atomic.cc:            __func__, pkt->getAddr(), pkt->cmdString());
+src/cpu/simple/atomic.cc:                pkt->getAddr());
+src/cpu/simple/exec_context.hh:    getAddrMonitor() override
+src/cpu/simple/noncaching.cc:    if (system->isMemAddr(pkt->getAddr())) {
+src/cpu/simple/timing.cc:        DPRINTF(SimpleCPU, " -- pkt addr: %#x\n", ifetch_pkt->getAddr());
+src/cpu/simple/timing.cc:            pkt->getAddr() : 0);
+src/cpu/simple/timing.cc:    DPRINTF(SimpleCPU, "Received fetch response %#x\n", pkt->getAddr());
+src/cpu/simple/timing.cc:    DPRINTF(SimpleCPU, "Received load/store response %#x\n", pkt->getAddr());
+src/cpu/testers/directedtest/RubyDirectedTester.cc:    tester->hitCallback(id, pkt->getAddr());
+src/cpu/testers/rubytest/Check.cc:    Addr address = data->getAddress();
+src/cpu/testers/rubytest/Check.cc:    //  assert(getAddress() == address);
+src/cpu/testers/rubytest/Check.hh:    Addr getAddress() const { return m_address; }
+src/cpu/testers/rubytest/RubyTester.cc:            data->getAddress(), data->getSize());
+src/cpu/testers/rubytest/RubyTester.cc:    Check* check_ptr = m_checkTable_ptr->getCheck(data->getAddress());
+src/cpu/testers/traffic_gen/base.cc:        if (pkt && system->isMemAddr(pkt->getAddr())) {
+src/cpu/testers/traffic_gen/base.cc:                    pkt->cmdString(), pkt->getAddr());
+src/cpu/base.cc:        monitor.pAddr = pkt->getAddr() & mask;
+src/cpu/base.cc:        if (pAddr == pkt->getAddr()) {
+src/cpu/base.cc:                    pkt->getAddr());
+src/cpu/base_dyn_inst.hh:    getAddrMonitor() override
+src/cpu/exec_context.hh:    virtual AddressMonitor *getAddrMonitor() = 0;
+src/cpu/inst_pb_trace.cc:        tracer.traceMem(staticInst, getAddr(), getSize(), getFlags());
+src/dev/arm/a9scu.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/a9scu.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/a9scu.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/a9scu.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/amba_device.cc:    Addr daddr = pkt->getAddr() - pio_addr;
+src/dev/arm/amba_device.cc:            pkt->getAddr() - pio_addr, byte);
+src/dev/arm/amba_fake.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/amba_fake.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/amba_fake.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/energy_ctrl.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/energy_ctrl.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/energy_ctrl.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/energy_ctrl.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/fvp_base_pwr_ctrl.cc:    const Addr addr = pkt->getAddr() - pioAddr;
+src/dev/arm/fvp_base_pwr_ctrl.cc:    const Addr addr = pkt->getAddr() - pioAddr;
+src/dev/arm/generic_timer.cc:GenericTimerFrame::getAddrRanges() const
+src/dev/arm/generic_timer.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/generic_timer.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/generic_timer.cc:GenericTimerMem::getAddrRanges() const
+src/dev/arm/generic_timer.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/generic_timer.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/generic_timer.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/generic_timer.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/gic_v2.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/gic_v2.cc:        panic("Read to unknown address %#x\n", pkt->getAddr());
+src/dev/arm/gic_v2.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/gic_v2.cc:        panic("Write to unknown address %#x\n", pkt->getAddr());
+src/dev/arm/gic_v2.cc:    const Addr daddr = pkt->getAddr() - distRange.start();
+src/dev/arm/gic_v2.cc:    const Addr daddr = pkt->getAddr() - cpuRange.start();
+src/dev/arm/gic_v2.cc:    const Addr daddr = pkt->getAddr() - distRange.start();
+src/dev/arm/gic_v2.cc:    const Addr daddr = pkt->getAddr() - cpuRange.start();
+src/dev/arm/gic_v2.hh:    AddrRangeList getAddrRanges() const override { return addrRanges; }
+src/dev/arm/gic_v2m.cc:Gicv2m::getAddrRanges() const
+src/dev/arm/gic_v2m.cc:    int frame = frameFromAddr(pkt->getAddr());
+src/dev/arm/gic_v2m.cc:    Addr offset = pkt->getAddr() - frames[frame]->addr;
+src/dev/arm/gic_v2m.cc:    int frame = frameFromAddr(pkt->getAddr());
+src/dev/arm/gic_v2m.cc:    Addr offset = pkt->getAddr() - frames[frame]->addr;
+src/dev/arm/gic_v2m.hh:    virtual AddrRangeList getAddrRanges() const;
+src/dev/arm/gic_v3.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/gic_v3.cc:    const Addr addr = pkt->getAddr();
+src/dev/arm/gic_v3.hh:    getAddrRanges() const override
+src/dev/arm/gic_v3_its.cc:Gicv3Its::getAddrRanges() const
+src/dev/arm/gic_v3_its.cc:    const Addr addr = pkt->getAddr() - pioAddr;
+src/dev/arm/gic_v3_its.cc:    Addr addr = pkt->getAddr() - pioAddr;
+src/dev/arm/gic_v3_its.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/gpu_nomali.cc:    assert(pkt->getAddr() >= pioAddr);
+src/dev/arm/gpu_nomali.cc:    const Addr addr(pkt->getAddr() - pioAddr);
+src/dev/arm/gpu_nomali.cc:    assert(pkt->getAddr() >= pioAddr);
+src/dev/arm/gpu_nomali.cc:    const Addr addr(pkt->getAddr() - pioAddr);
+src/dev/arm/gpu_nomali.cc:NoMaliGpu::getAddrRanges() const
+src/dev/arm/gpu_nomali.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/hdlcd.cc:    assert(pkt->getAddr() >= pioAddr &&
+src/dev/arm/hdlcd.cc:           pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/hdlcd.cc:    const Addr daddr(pkt->getAddr() - pioAddr);
+src/dev/arm/hdlcd.cc:    assert(pkt->getAddr() >= pioAddr &&
+src/dev/arm/hdlcd.cc:           pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/hdlcd.cc:    const Addr daddr(pkt->getAddr() - pioAddr);
+src/dev/arm/hdlcd.hh:    AddrRangeList getAddrRanges() const override { return addrRanges; }
+src/dev/arm/kmi.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/kmi.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/kmi.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/kmi.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/pl011.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/pl011.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/pl011.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/pl011.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/pl111.cc:    assert(pkt->getAddr() >= pioAddr &&
+src/dev/arm/pl111.cc:           pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/pl111.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/pl111.cc:    assert(pkt->getAddr() >= pioAddr &&
+src/dev/arm/pl111.cc:           pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/pl111.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/pl111.cc:Pl111::getAddrRanges() const
+src/dev/arm/pl111.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/rtc_pl031.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/rtc_pl031.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/rtc_pl031.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/rtc_pl031.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/rv_ctrl.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/rv_ctrl.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/rv_ctrl.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/rv_ctrl.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/smmu_v3.cc:        pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3.cc:            a.pkt->getAddr(), a.pkt->getSize());
+src/dev/arm/smmu_v3.cc:        pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3.cc:            a.pkt->getAddr(), a.pkt->getSize());
+src/dev/arm/smmu_v3.cc:                        action.pkt->getAddr(), action.pkt->getSize());
+src/dev/arm/smmu_v3.cc:                    action.pkt->getAddr(), action.pkt->getSize());
+src/dev/arm/smmu_v3.cc:                    action.pkt->getAddr(),
+src/dev/arm/smmu_v3.cc:                    action.pkt->getAddr(), action.pkt->getSize());
+src/dev/arm/smmu_v3.cc:            pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3.cc:    int offset = pkt->getAddr() - regsMap.start();
+src/dev/arm/smmu_v3.cc:    int offset = pkt->getAddr() - regsMap.start();
+src/dev/arm/smmu_v3.cc:            pkt->getAddr(), pkt->getSize(),
+src/dev/arm/smmu_v3_deviceifc.cc:            devicePort->getPeer(), pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3_deviceifc.cc:            devicePort->getPeer(), pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3_deviceifc.cc:            pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3_deviceifc.cc:            pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3_deviceifc.cc:            pkt->getAddr(), pkt->getSize());
+src/dev/arm/smmu_v3_ports.cc:    Addr addr = pkt->getAddr();
+src/dev/arm/smmu_v3_ports.cc:SMMUControlPort::getAddrRanges() const
+src/dev/arm/smmu_v3_ports.hh:    virtual AddrRangeList getAddrRanges() const
+src/dev/arm/smmu_v3_ports.hh:    virtual AddrRangeList getAddrRanges() const;
+src/dev/arm/smmu_v3_ports.hh:    virtual AddrRangeList getAddrRanges() const
+src/dev/arm/smmu_v3_transl.cc:    req.addr         = pkt->getAddr();
+src/dev/arm/timer_a9global.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/timer_a9global.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/timer_a9global.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/timer_a9global.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/timer_cpulocal.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/timer_cpulocal.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/timer_cpulocal.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/timer_cpulocal.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/timer_sp804.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/timer_sp804.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/timer_sp804.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/arm/timer_sp804.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/arm/ufs_device.cc:UFSHostDevice::getAddrRanges() const
+src/dev/arm/ufs_device.cc:    switch (pkt->getAddr() & 0xFF)
+src/dev/arm/ufs_device.cc:    switch (pkt->getAddr() & 0xFF)
+src/dev/arm/ufs_device.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/vgic.cc:    Addr addr = pkt->getAddr();
+src/dev/arm/vgic.cc:        panic("Read to unknown address %#x\n", pkt->getAddr());
+src/dev/arm/vgic.cc:    Addr addr = pkt->getAddr();
+src/dev/arm/vgic.cc:        panic("Write to unknown address %#x\n", pkt->getAddr());
+src/dev/arm/vgic.cc:    Addr daddr = pkt->getAddr() - vcpuAddr;
+src/dev/arm/vgic.cc:    Addr daddr = pkt->getAddr() - hvAddr;
+src/dev/arm/vgic.cc:    Addr daddr = pkt->getAddr() - vcpuAddr;
+src/dev/arm/vgic.cc:    Addr daddr = pkt->getAddr() - hvAddr;
+src/dev/arm/vgic.cc:VGic::getAddrRanges() const
+src/dev/arm/vgic.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/arm/vio_mmio.cc:    const Addr offset = pkt->getAddr() - pioAddr;
+src/dev/arm/vio_mmio.cc:    const Addr offset = pkt->getAddr() - pioAddr;
+src/dev/arm/watchdog_sp805.cc:    const Addr addr = pkt->getAddr() - pioAddr;
+src/dev/arm/watchdog_sp805.cc:    const Addr addr = pkt->getAddr() - pioAddr;
+src/dev/hsa/hsa_packet_processor.cc:HSAPacketProcessor::getAddrRanges() const
+src/dev/hsa/hsa_packet_processor.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/hsa/hsa_packet_processor.cc:    Addr M5_VAR_USED daddr = pkt->getAddr() - pioAddr;
+src/dev/hsa/hsa_packet_processor.hh:    virtual AddrRangeList getAddrRanges() const;
+src/dev/i2c/bus.cc:    assert(pkt->getAddr() == pioAddr + SB_CONTROLS);
+src/dev/i2c/bus.cc:    assert(pkt->getAddr() == pioAddr + SB_CONTROLS ||
+src/dev/i2c/bus.cc:           pkt->getAddr() == pioAddr + SB_CONTROLC);
+src/dev/i2c/bus.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/i2c/bus.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/i2c/bus.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/i2c/bus.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/net/i8254xGBe.cc:    int offset = pkt->getAddr() & PCI_CONFIG_SIZE;
+src/dev/net/i8254xGBe.cc:    if (!getBAR(pkt->getAddr(), bar, daddr))
+src/dev/net/i8254xGBe.cc:    if (!getBAR(pkt->getAddr(), bar, daddr))
+src/dev/net/ns_gige.cc:    int offset = pkt->getAddr() & PCI_CONFIG_SIZE;
+src/dev/net/ns_gige.cc:    Addr daddr = pkt->getAddr() & 0xfff;
+src/dev/net/ns_gige.cc:            daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/ns_gige.cc:    Addr daddr = pkt->getAddr() & 0xfff;
+src/dev/net/ns_gige.cc:            daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:    assert(pkt->getAddr() >= BARAddrs[0] && pkt->getSize() < BARSize[0]);
+src/dev/net/sinic.cc:    Addr daddr = pkt->getAddr() - BARAddrs[0];
+src/dev/net/sinic.cc:              cpu, index, daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:              info.name, cpu, index, daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:              info.name, cpu, index, daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:            info.name, cpu, index, daddr, pkt->getAddr(), pkt->getSize(), value);
+src/dev/net/sinic.cc:    assert(pkt->getAddr() >= BARAddrs[0] && pkt->getSize() < BARSize[0]);
+src/dev/net/sinic.cc:    Addr daddr = pkt->getAddr() - BARAddrs[0];
+src/dev/net/sinic.cc:                cpu, daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:              info.name, cpu, index, daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:              info.name, cpu, index, daddr, pkt->getAddr(), pkt->getSize());
+src/dev/net/sinic.cc:            daddr, pkt->getAddr(), pkt->getSize());
+src/dev/pci/copy_engine.cc:    if (!getBAR(pkt->getAddr(), bar, daddr))
+src/dev/pci/copy_engine.cc:    if (!getBAR(pkt->getAddr(), bar, daddr))
+src/dev/pci/device.cc:    int offset = pkt->getAddr() & PCI_CONFIG_SIZE;
+src/dev/pci/device.cc:PciDevice::getAddrRanges() const
+src/dev/pci/device.cc:    int offset = pkt->getAddr() & PCI_CONFIG_SIZE;
+src/dev/pci/device.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/pci/host.cc:    const auto dev_addr(decodeAddress(pkt->getAddr() - confBase));
+src/dev/pci/host.cc:    const auto dev_addr(decodeAddress(pkt->getAddr() - confBase));
+src/dev/pci/host.cc:GenericPciHost::getAddrRanges() const
+src/dev/pci/host.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/serial/simple.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/serial/simple.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/serial/uart8250.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/serial/uart8250.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/serial/uart8250.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/serial/uart8250.cc:    Addr daddr = pkt->getAddr() - pioAddr;
+src/dev/serial/uart8250.cc:Uart8250::getAddrRanges() const
+src/dev/serial/uart8250.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/sparc/dtod.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/sparc/iob.cc:    if (pkt->getAddr() >= iobManAddr && pkt->getAddr() < iobManAddr + iobManSize)
+src/dev/sparc/iob.cc:    else if (pkt->getAddr() >= iobJBusAddr && pkt->getAddr() < iobJBusAddr+iobJBusSize)
+src/dev/sparc/iob.cc:        Addr accessAddr = pkt->getAddr() - iobManAddr;
+src/dev/sparc/iob.cc:        Addr accessAddr = pkt->getAddr() - iobJBusAddr;
+src/dev/sparc/iob.cc:    if (pkt->getAddr() >= iobManAddr && pkt->getAddr() < iobManAddr + iobManSize)
+src/dev/sparc/iob.cc:    else if (pkt->getAddr() >= iobJBusAddr && pkt->getAddr() < iobJBusAddr+iobJBusSize)
+src/dev/sparc/iob.cc:        Addr accessAddr = pkt->getAddr() - iobManAddr;
+src/dev/sparc/iob.cc:        Addr accessAddr = pkt->getAddr() - iobJBusAddr;
+src/dev/sparc/iob.cc:Iob::getAddrRanges() const
+src/dev/sparc/iob.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/sparc/mm_disk.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/sparc/mm_disk.cc:    accessAddr = pkt->getAddr() - pioAddr;
+src/dev/sparc/mm_disk.cc:    assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/sparc/mm_disk.cc:    accessAddr = pkt->getAddr() - pioAddr;
+src/dev/storage/ide_ctrl.cc:    int offset = pkt->getAddr() & PCI_CONFIG_SIZE;
+src/dev/storage/ide_ctrl.cc:    int offset = pkt->getAddr() & PCI_CONFIG_SIZE;
+src/dev/storage/ide_ctrl.cc:    Addr addr = pkt->getAddr();
+src/dev/storage/ide_ctrl.cc:            read ? "Read" : "Write", pkt->getAddr(), pkt->getSize(), data);
+src/dev/virtio/base.cc:    const Addr vq_addr(queue->getAddress());
+src/dev/virtio/base.cc:    Addr address(getCurrentQueue().getAddress());
+src/dev/virtio/base.hh:    Addr getAddress() const { return _address; }
+src/dev/virtio/pci.cc:    if (!getBAR(pkt->getAddr(), bar, offset))
+src/dev/virtio/pci.cc:    if (!getBAR(pkt->getAddr(), bar, offset))
+src/dev/x86/cmos.cc:    switch(pkt->getAddr() - pioAddr)
+src/dev/x86/cmos.cc:    switch(pkt->getAddr() - pioAddr)
+src/dev/x86/i8042.cc:X86ISA::I8042::getAddrRanges() const
+src/dev/x86/i8042.cc:    Addr addr = pkt->getAddr();
+src/dev/x86/i8042.cc:    Addr addr = pkt->getAddr();
+src/dev/x86/i8042.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/x86/i82094aa.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/dev/x86/i82094aa.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/dev/x86/i8237.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/dev/x86/i8237.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/dev/x86/i8254.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/dev/x86/i8254.cc:    Addr offset = pkt->getAddr() - pioAddr;
+src/dev/x86/i8259.cc:    switch(pkt->getAddr() - pioAddr)
+src/dev/x86/i8259.cc:    switch (pkt->getAddr() - pioAddr) {
+src/dev/x86/intdev.hh:    getAddrRanges() const
+src/dev/x86/speaker.cc:    assert(pkt->getAddr() == pioAddr);
+src/dev/x86/speaker.cc:    assert(pkt->getAddr() == pioAddr);
+src/dev/dma_device.cc:            pkt->cmdString(), pkt->getAddr(), pkt->req->getSize(),
+src/dev/dma_device.cc:            pkt->getAddr());
+src/dev/io_device.cc:BasicPioDevice::getAddrRanges() const
+src/dev/io_device.hh: * must respond to. The device must also provide getAddrRanges() function
+src/dev/io_device.hh:    getAddrRanges() const override
+src/dev/io_device.hh:        return device->getAddrRanges();
+src/dev/io_device.hh: * implement getAddrRanges(), read(), and write(). The magic do choose which
+src/dev/io_device.hh:    virtual AddrRangeList getAddrRanges() const = 0;
+src/dev/io_device.hh:    AddrRangeList getAddrRanges() const override;
+src/dev/isa_fake.cc:                name(), pkt->getAddr(), pkt->getSize());
+src/dev/isa_fake.cc:                pkt->getAddr(), pkt->getSize());
+src/dev/isa_fake.cc:        assert(pkt->getAddr() >= pioAddr && pkt->getAddr() < pioAddr + pioSize);
+src/dev/isa_fake.cc:                pkt->getAddr(), pkt->getSize());
+src/dev/isa_fake.cc:                name(), pkt->getAddr(), pkt->getSize(), data);
+src/dev/isa_fake.cc:                pkt->getAddr(), pkt->getSize());
+src/dev/isa_fake.cc:                pkt->getAddr(), pkt->getSize());
+src/gpu-compute/gpu_command_processor.cc:GPUCommandProcessor::getAddrRanges() const
+src/gpu-compute/gpu_command_processor.hh:    AddrRangeList getAddrRanges() const override;
+src/gpu-compute/gpu_tlb.cc:    GpuTLB::CpuSidePort::getAddrRanges() const
+src/gpu-compute/gpu_tlb.hh:            virtual AddrRangeList getAddrRanges() const;
+src/gpu-compute/lds_state.hh:        getAddrRanges() const
+src/gpu-compute/lds_state.hh:          ranges.push_back(ownerLds->getAddrRange());
+src/gpu-compute/lds_state.hh:    getAddrRange() const
+src/gpu-compute/tlb_coalescer.cc:TLBCoalescer::CpuSidePort::getAddrRanges() const
+src/gpu-compute/tlb_coalescer.hh:        virtual AddrRangeList getAddrRanges() const;
+src/gpu-compute/compute_unit.cc:            gpuDynInst->memStatusVector[pkt->getAddr()].push_back(index);
+src/learning_gem5/part2/simple_cache.cc:SimpleCache::CPUSidePort::getAddrRanges() const
+src/learning_gem5/part2/simple_cache.cc:    return owner->getAddrRanges();
+src/learning_gem5/part2/simple_cache.cc:    DPRINTF(SimpleCache, "Got request for addr %#x\n", pkt->getAddr());
+src/learning_gem5/part2/simple_cache.cc:    DPRINTF(SimpleCache, "Got response for addr %#x\n", pkt->getAddr());
+src/learning_gem5/part2/simple_cache.cc:    DPRINTF(SimpleCache, "Sending resp for addr %#x\n", pkt->getAddr());
+src/learning_gem5/part2/simple_cache.cc:        Addr addr = pkt->getAddr();
+src/learning_gem5/part2/simple_cache.cc:            assert(new_pkt->getAddr() == new_pkt->getBlockAddr(blockSize));
+src/learning_gem5/part2/simple_cache.cc:    assert(pkt->getAddr() ==  pkt->getBlockAddr(blockSize));
+src/learning_gem5/part2/simple_cache.cc:    assert(cacheStore.find(pkt->getAddr()) == cacheStore.end());
+src/learning_gem5/part2/simple_cache.cc:    cacheStore[pkt->getAddr()] = data;
+src/learning_gem5/part2/simple_cache.cc:SimpleCache::getAddrRanges() const
+src/learning_gem5/part2/simple_cache.cc:    return memPort.getAddrRanges();
+src/learning_gem5/part2/simple_cache.hh:        AddrRangeList getAddrRanges() const override;
+src/learning_gem5/part2/simple_cache.hh:    AddrRangeList getAddrRanges() const;
+src/learning_gem5/part2/simple_memobj.cc:SimpleMemobj::CPUSidePort::getAddrRanges() const
+src/learning_gem5/part2/simple_memobj.cc:    return owner->getAddrRanges();
+src/learning_gem5/part2/simple_memobj.cc:    DPRINTF(SimpleMemobj, "Got request for addr %#x\n", pkt->getAddr());
+src/learning_gem5/part2/simple_memobj.cc:    DPRINTF(SimpleMemobj, "Got response for addr %#x\n", pkt->getAddr());
+src/learning_gem5/part2/simple_memobj.cc:SimpleMemobj::getAddrRanges() const
+src/learning_gem5/part2/simple_memobj.cc:    return memPort.getAddrRanges();
+src/learning_gem5/part2/simple_memobj.hh:        AddrRangeList getAddrRanges() const override;
+src/learning_gem5/part2/simple_memobj.hh:    AddrRangeList getAddrRanges() const;
+src/mem/abstract_mem.hh:    AddrRange getAddrRange() const;
+src/mem/addr_mapper.cc:    Addr orig_addr = pkt->getAddr();
+src/mem/addr_mapper.cc:    Addr orig_addr = pkt->getAddr();
+src/mem/addr_mapper.cc:    Addr orig_addr = pkt->getAddr();
+src/mem/addr_mapper.cc:    Addr orig_addr = pkt->getAddr();
+src/mem/addr_mapper.cc:    Addr orig_addr = pkt->getAddr();
+src/mem/addr_mapper.cc:    Addr remapped_addr = pkt->getAddr();
+src/mem/addr_mapper.cc:RangeAddrMapper::getAddrRanges() const
+src/mem/addr_mapper.hh:        AddrRangeList getAddrRanges() const
+src/mem/addr_mapper.hh:            return mapper.getAddrRanges();
+src/mem/addr_mapper.hh:    virtual AddrRangeList getAddrRanges() const = 0;
+src/mem/addr_mapper.hh:    AddrRangeList getAddrRanges() const;
+src/mem/bridge.cc:            pkt->cmdString(), pkt->getAddr());
+src/mem/bridge.cc:            pkt->cmdString(), pkt->getAddr());
+src/mem/bridge.cc:            pkt->getAddr(), transmitList.size());
+src/mem/bridge.cc:            pkt->getAddr(), outstandingResponses);
+src/mem/bridge.cc:Bridge::BridgeResponsePort::getAddrRanges() const
+src/mem/bridge.hh:        AddrRangeList getAddrRanges() const;
+src/mem/coherent_xbar.cc:    PortID mem_side_port_id = findPort(pkt->getAddrRange());
+src/mem/coherent_xbar.cc:    const Addr addr(pkt->getAddr());
+src/mem/coherent_xbar.cc:    assert(findPort(pkt->getAddrRange()) == mem_side_port_id);
+src/mem/coherent_xbar.cc:            snoopFilter->finishRequest(false, pkt->getAddr(), pkt->isSecure());
+src/mem/coherent_xbar.cc:    PortID mem_side_port_id = findPort(pkt->getAddrRange());
+src/mem/coherent_xbar.cc:        PortID dest_id = findPort(pkt->getAddrRange());
+src/mem/cache/prefetch/access_map_pattern_matching.cc:    Addr am_addr = pfi.getAddr() / hotZoneSize;
+src/mem/cache/prefetch/access_map_pattern_matching.cc:    Addr current_block = (pfi.getAddr() % hotZoneSize) / blkSize;
+src/mem/cache/prefetch/base.cc:        Addr offset = pkt->req->getPaddr() - pkt->getAddr();
+src/mem/cache/prefetch/base.cc:    if (hasBeenPrefetched(pkt->getAddr(), pkt->isSecure())) {
+src/mem/cache/prefetch/base.hh:        Addr getAddr() const
+src/mem/cache/prefetch/base.hh:            return this->getAddr() == pfi.getAddr() &&
+src/mem/cache/prefetch/bop.cc:    Addr addr = pfi.getAddr();
+src/mem/cache/prefetch/bop.cc:    Addr tag_y = tag(pkt->getAddr());
+src/mem/cache/prefetch/delta_correlating_prediction_tables.cc:    Addr address = pfi.getAddr();
+src/mem/cache/prefetch/indirect_memory.cc:    Addr addr = pfi.getAddr();
+src/mem/cache/prefetch/irregular_stream_buffer.cc:    Addr addr = blockIndex(pfi.getAddr());
+src/mem/cache/prefetch/queued.cc:    Addr blk_addr = blockAddress(pfi.getAddr());
+src/mem/cache/prefetch/queued.cc:            if (itr->pfInfo.getAddr() == blk_addr &&
+src/mem/cache/prefetch/queued.cc:        if (!samePage(addr_prio.first, pfi.getAddr())) {
+src/mem/cache/prefetch/queued.cc:        if (can_cross_page || samePage(addr_prio.first, pfi.getAddr())) {
+src/mem/cache/prefetch/queued.cc:                    "inserting into prefetch queue.\n", new_pfi.getAddr());
+src/mem/cache/prefetch/queued.cc:    DPRINTF(HWPrefetch, "Generating prefetch for %#x.\n", pkt->getAddr());
+src/mem/cache/prefetch/queued.cc:    bool positive_stride = new_pfi.getAddr() >= orig_addr;
+src/mem/cache/prefetch/queued.cc:        (new_pfi.getAddr() - orig_addr) : (orig_addr - new_pfi.getAddr());
+src/mem/cache/prefetch/queued.cc:    if (samePage(orig_addr, new_pfi.getAddr())) {
+src/mem/cache/prefetch/queued.cc:            target_paddr = new_pfi.getAddr();
+src/mem/cache/prefetch/queued.cc:            translation_req = createPrefetchRequest(new_pfi.getAddr(), new_pfi,
+src/mem/cache/prefetch/queued.cc:                new_pfi.getAddr(), priority, pf_time);
+src/mem/cache/prefetch/queued.cc:                "addr:%#x priority: %3d\n", new_pfi.getAddr(), priority);
+src/mem/cache/prefetch/queued.cc:                            "oldest packet, addr: %#x\n",it->pfInfo.getAddr());
+src/mem/cache/prefetch/sbooe.cc:    auto it = demandAddresses.find(pkt->getAddr());
+src/mem/cache/prefetch/sbooe.cc:    const Addr pfi_addr = pfi.getAddr();
+src/mem/cache/prefetch/signature_path.cc:    Addr request_addr = pfi.getAddr();
+src/mem/cache/prefetch/spatio_temporal_memory_streaming.cc:    Addr sr_addr = pfi.getAddr() / spatialRegionSize;
+src/mem/cache/prefetch/spatio_temporal_memory_streaming.cc:    Addr sr_offset = (pfi.getAddr() % spatialRegionSize) / blkSize;
+src/mem/cache/prefetch/stride.cc:    Addr pf_addr = pfi.getAddr();
+src/mem/cache/prefetch/tagged.cc:    Addr blkAddr = blockAddress(pfi.getAddr());
+src/mem/cache/tags/base.cc:    blk->insert(extractTag(pkt->getAddr()), pkt->isSecure(), requestor_id,
+src/mem/cache/base.cc:        return tempBlock->getAddr();
+src/mem/cache/base.cc:        writeAllocator->updateMode(pkt->getAddr(), pkt->getSize(),
+src/mem/cache/base.cc:    CacheBlk *blk = tags->findBlock(pkt->getAddr(), pkt->isSecure());
+src/mem/cache/base.cc:                pkt->getAddr());
+src/mem/cache/base.cc:    CacheBlk *blk = tags->findBlock(pkt->getAddr(), is_secure);
+src/mem/cache/base.cc:            int offset = tags->extractBlkOffset(pkt->getAddr());
+src/mem/cache/base.cc:    blk = tags->accessBlock(pkt->getAddr(), pkt->isSecure(), tag_latency);
+src/mem/cache/base.cc:        WriteQueueEntry *wb_entry = writeBuffer.findMatch(pkt->getAddr(),
+src/mem/cache/base.cc:            mshrQueue.findMatch(pkt->getAddr(), pkt->isSecure())) {
+src/mem/cache/base.cc:                    "dropping\n", pkt->getAddr());
+src/mem/cache/base.cc:    Addr addr = pkt->getAddr();
+src/mem/cache/base.cc:    const Addr addr = pkt->getAddr();
+src/mem/cache/base.cc:BaseCache::CpuSidePort::getAddrRanges() const
+src/mem/cache/base.cc:    return cache->getAddrRanges();
+src/mem/cache/base.hh:        virtual AddrRangeList getAddrRanges() const override;
+src/mem/cache/base.hh:    const AddrRangeList &getAddrRanges() const { return addrRanges; }
+src/mem/cache/cache.cc:        CacheBlk *old_blk(tags->findBlock(pkt->getAddr(), pkt->isSecure()));
+src/mem/cache/cache.cc:                "%#llx (%s)\n", pkt->getAddr(), pkt->isSecure() ? "s" : "ns");
+src/mem/cache/cache.cc:    assert(pkt->getAddr() == pkt->getBlockAddr(blkSize));
+src/mem/cache/cache.cc:                "from lower cache\n", pkt->getAddr(), pkt->print());
+src/mem/cache/cache.cc:    if (!inRange(pkt->getAddr())) {
+src/mem/cache/cache.cc:    CacheBlk *blk = tags->findBlock(pkt->getAddr(), is_secure);
+src/mem/cache/cache.cc:                pkt->getAddr(), is_secure ? "s" : "ns");
+src/mem/cache/cache.cc:    if (!inRange(pkt->getAddr())) {
+src/mem/cache/cache.cc:    CacheBlk *blk = tags->findBlock(pkt->getAddr(), pkt->isSecure());
+src/mem/cache/cache.cc:                    tgt_pkt->getAddr(), tgt_pkt->isSecure()? "s": "ns");
+src/mem/cache/cache_blk.hh:    Addr getAddr() const
+src/mem/cache/noncoherent_cache.cc:    assert(pkt->getAddr() == pkt->getBlockAddr(blkSize));
+src/mem/cache/noncoherent_cache.cc:                bus_pkt->getAddr());
+src/mem/coherent_xbar.hh:        getAddrRanges() const override
+src/mem/coherent_xbar.hh:            return xbar.getAddrRanges();
+src/mem/comm_monitor.cc:CommMonitor::getAddrRanges() const
+src/mem/comm_monitor.cc:    return memSidePort.getAddrRanges();
+src/mem/comm_monitor.hh:        AddrRangeList getAddrRanges() const
+src/mem/comm_monitor.hh:            return mon.getAddrRanges();
+src/mem/comm_monitor.hh:    AddrRangeList getAddrRanges() const;
+src/mem/dramsim2.cc:            outstandingReads[pkt->getAddr()].push(pkt);
+src/mem/dramsim2.cc:            outstandingWrites[pkt->getAddr()].push(pkt);
+src/mem/dramsim2.cc:        DPRINTF(DRAMSim2, "Enqueueing address %lld\n", pkt->getAddr());
+src/mem/dramsim2.cc:        wrapper.enqueue(pkt->isWrite(), pkt->getAddr());
+src/mem/dramsim2.cc:    DPRINTF(DRAMSim2, "Access for address %lld\n", pkt->getAddr());
+src/mem/dramsim2.cc:                pkt->getAddr());
+src/mem/dramsim2.cc:DRAMSim2::MemoryPort::getAddrRanges() const
+src/mem/dramsim2.cc:    ranges.push_back(memory.getAddrRange());
+src/mem/dramsim2.hh:        AddrRangeList getAddrRanges() const;
+src/mem/dramsim3.cc:            outstandingReads[pkt->getAddr()].push(pkt);
+src/mem/dramsim3.cc:            outstandingWrites[pkt->getAddr()].push(pkt);
+src/mem/dramsim3.cc:        assert(wrapper.canAccept(pkt->getAddr(), pkt->isWrite()));
+src/mem/dramsim3.cc:        DPRINTF(DRAMsim3, "Enqueueing address %lld\n", pkt->getAddr());
+src/mem/dramsim3.cc:        wrapper.enqueue(pkt->getAddr(), pkt->isWrite());
+src/mem/dramsim3.cc:    DPRINTF(DRAMsim3, "Access for address %lld\n", pkt->getAddr());
+src/mem/dramsim3.cc:                pkt->getAddr());
+src/mem/dramsim3.cc:DRAMsim3::MemoryPort::getAddrRanges() const
+src/mem/dramsim3.cc:    ranges.push_back(memory.getAddrRange());
+src/mem/dramsim3.hh:        AddrRangeList getAddrRanges() const;
+src/mem/external_slave.cc:            " data: ...\n", packet->getAddr(), size);
+src/mem/external_slave.cc:ExternalSlave::ExternalPort::getAddrRanges() const
+src/mem/external_slave.hh: * exception of getAddrRanges which is provided by the ExternalSlave
+src/mem/external_slave.hh:        AddrRangeList getAddrRanges() const;
+src/mem/hmc_controller.cc:                src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/hmc_controller.cc:            src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/hmc_controller.cc:                src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/mem_checker_monitor.cc:    Addr addr = pkt->getAddr();
+src/mem/mem_checker_monitor.cc:    Addr addr = pkt->getAddr();
+src/mem/mem_checker_monitor.cc:    Addr addr = pkt->getAddr();
+src/mem/mem_checker_monitor.cc:    Addr addr = pkt->getAddr();
+src/mem/mem_checker_monitor.cc:MemCheckerMonitor::getAddrRanges() const
+src/mem/mem_checker_monitor.cc:    return memSidePort.getAddrRanges();
+src/mem/mem_checker_monitor.hh:        AddrRangeList getAddrRanges() const
+src/mem/mem_checker_monitor.hh:            return mon.getAddrRanges();
+src/mem/mem_checker_monitor.hh:    AddrRangeList getAddrRanges() const;
+src/mem/mem_ctrl.cc:                     pkt->cmdString(), pkt->getAddr());
+src/mem/mem_ctrl.cc:    if (dram && dram->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:    } else if (nvm && nvm->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:    const Addr base_addr = pkt->getAddr();
+src/mem/mem_ctrl.cc:                        "memory requests\n", pkt->getAddr(), pkt_count);
+src/mem/mem_ctrl.cc:    const Addr base_addr = pkt->getAddr();
+src/mem/mem_ctrl.cc:            pkt->cmdString(), pkt->getAddr(), pkt->getSize());
+src/mem/mem_ctrl.cc:    if (dram && dram->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:    } else if (nvm && nvm->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:    unsigned offset = pkt->getAddr() & (burst_size - 1);
+src/mem/mem_ctrl.cc:    DPRINTF(MemCtrl, "Responding to Address %lld.. \n",pkt->getAddr());
+src/mem/mem_ctrl.cc:    if (dram && dram->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:    } else if (nvm && nvm->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:                        mem_pkt->qosValue(), mem_pkt->getAddr(), 1,
+src/mem/mem_ctrl.cc:                    mem_pkt->qosValue(), mem_pkt->getAddr(), 1,
+src/mem/mem_ctrl.cc:    if (dram && dram->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:    } else if (nvm && nvm->getAddrRange().contains(pkt->getAddr())) {
+src/mem/mem_ctrl.cc:MemCtrl::MemoryPort::getAddrRanges() const
+src/mem/mem_ctrl.cc:        ranges.push_back(ctrl.dram->getAddrRange());
+src/mem/mem_ctrl.cc:        ranges.push_back(ctrl.nvm->getAddrRange());
+src/mem/mem_ctrl.hh:    inline Addr getAddr() const { return addr; }
+src/mem/mem_ctrl.hh:        virtual AddrRangeList getAddrRanges() const;
+src/mem/mem_delay.hh:        AddrRangeList getAddrRanges() const override {
+src/mem/mem_delay.hh:            return parent.requestPort.getAddrRanges();
+src/mem/noncoherent_xbar.cc:    PortID mem_side_port_id = findPort(pkt->getAddrRange());
+src/mem/noncoherent_xbar.cc:                src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/noncoherent_xbar.cc:            src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/noncoherent_xbar.cc:                src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/noncoherent_xbar.cc:                src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/noncoherent_xbar.cc:            src_port->name(), pkt->cmdString(), pkt->getAddr());
+src/mem/noncoherent_xbar.cc:            cpuSidePorts[cpu_side_port_id]->name(), pkt->getAddr(),
+src/mem/noncoherent_xbar.cc:    PortID mem_side_port_id = findPort(pkt->getAddrRange());
+src/mem/noncoherent_xbar.cc:                cpuSidePorts[cpu_side_port_id]->name(), pkt->getAddr(),
+src/mem/noncoherent_xbar.cc:    PortID dest_id = findPort(pkt->getAddrRange());
+src/mem/noncoherent_xbar.hh:        getAddrRanges() const override
+src/mem/noncoherent_xbar.hh:            return xbar.getAddrRanges();
+src/mem/packet_queue.cc:            __func__, pkt->cmdString(), pkt->getAddr(), pkt->getSize(), when,
+src/mem/port.cc:    AddrRangeList getAddrRanges() const override { return AddrRangeList(); }
+src/mem/port.cc:RequestPort::getAddrRanges() const
+src/mem/port.cc:    return _responsePort->getAddrRanges();
+src/mem/port.hh:    AddrRangeList getAddrRanges() const;
+src/mem/port.hh:    virtual AddrRangeList getAddrRanges() const = 0;
+src/mem/qos/mem_ctrl.hh:                pkt->requestorId(), pkt->getAddr());
+src/mem/qos/mem_ctrl.hh:                    requestors[id], id, pkt->getAddr(),
+src/mem/qos/mem_sink.cc:            pkt->cmdString(), pkt->getAddr(), pkt->getSize());
+src/mem/qos/mem_sink.cc:                   pkt->getAddr(),
+src/mem/qos/mem_sink.cc:                    "priority queue %d\n", __func__, pkt->getAddr(),
+src/mem/qos/mem_sink.cc:            "corresponds to %d memory packets\n", __func__, pkt->getAddr(),
+src/mem/qos/mem_sink.cc:                pkt->getAddr(),
+src/mem/qos/mem_sink.cc:MemSinkCtrl::MemoryPort::getAddrRanges() const
+src/mem/qos/mem_sink.cc:    ranges.push_back(memory.interface->getAddrRange());
+src/mem/qos/mem_sink.hh:        AddrRangeList getAddrRanges() const;
+src/mem/ruby/common/SubBlock.hh:    Addr getAddress() const { return m_address; }
+src/mem/ruby/network/MessageBuffer.cc:            is_read ? "read" : "write", pkt->getAddr());
+src/mem/ruby/network/Network.cc:        const AddrRangeList &ranges = abs_cntrl->getAddrRanges();
+src/mem/ruby/profiler/AccessTraceForAddress.hh:    Addr getAddress() const { return m_addr; }
+src/mem/ruby/profiler/Profiler.hh:    AddressProfiler* getAddressProfiler() { return m_address_profiler_ptr; }
+src/mem/ruby/protocol/RubySlicc_Types.sm:  Addr getAddressAtIdx(int);
+src/mem/ruby/slicc_interface/AbstractController.cc:    (*msg).m_addr = pkt->getAddr();
+src/mem/ruby/slicc_interface/AbstractController.hh:    const AddrRangeList &getAddrRanges() const { return addrRanges; }
+src/mem/ruby/slicc_interface/RubyRequest.cc:    Addr wBase = pkt->getAddr();
+src/mem/ruby/slicc_interface/RubySlicc_Util.hh:    Addr pktLineAddr = makeLineAddress(pkt->getAddr());
+src/mem/ruby/slicc_interface/RubySlicc_Util.hh:        unsigned startByte = pkt->getAddr() - lineAddr;
+src/mem/ruby/slicc_interface/RubySlicc_Util.hh:    Addr pktLineAddr = makeLineAddress(pkt->getAddr());
+src/mem/ruby/slicc_interface/RubySlicc_Util.hh:        unsigned startByte = pkt->getAddr() - lineAddr;
+src/mem/ruby/slicc_interface/RubySlicc_Util.hh:    Addr pktLineAddr = makeLineAddress(pkt->getAddr());
+src/mem/ruby/slicc_interface/RubySlicc_Util.hh:        unsigned startByte = pkt->getAddr() - lineAddr;
+src/mem/ruby/structures/CacheMemory.cc:CacheMemory::getAddressAtIdx(int idx) const
+src/mem/ruby/structures/CacheMemory.hh:    Addr getAddressAtIdx(int idx) const;
+src/mem/ruby/system/DMASequencer.cc:    Addr paddr = pkt->getAddr();
+src/mem/ruby/system/GPUCoalescer.cc:            pkt->getAddr(), seqNum, instMap.size(), instMap[seqNum].size());
+src/mem/ruby/system/GPUCoalescer.cc:                      pkt->getAddr(), instMap.size(), current_time,
+src/mem/ruby/system/GPUCoalescer.cc:    Addr request_address = pkt->getAddr();
+src/mem/ruby/system/GPUCoalescer.cc:        request_address = pkt->getAddr();
+src/mem/ruby/system/GPUCoalescer.cc:                pkt->getAddr());
+src/mem/ruby/system/GPUCoalescer.cc:    Addr line_addr = makeLineAddress(pkt->getAddr());
+src/mem/ruby/system/GPUCoalescer.hh:        AddrRangeList getAddrRanges() const
+src/mem/ruby/system/HTMSequencer.cc:    assert(system->isMemAddr(pkt->getAddr()) || system->isDeviceMemAddr(pkt));
+src/mem/ruby/system/RubyPort.cc:    DPRINTF(RubyPort, "Response for address: 0x%#x\n", pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:            pkt->getAddr(), port->name());
+src/mem/ruby/system/RubyPort.cc:        AddrRangeList l = ruby_port->request_ports[i]->getAddrRanges();
+src/mem/ruby/system/RubyPort.cc:            if (it->contains(pkt->getAddr())) {
+src/mem/ruby/system/RubyPort.cc:        AddrRangeList l = ruby_port->request_ports[i]->getAddrRanges();
+src/mem/ruby/system/RubyPort.cc:            if (it->contains(pkt->getAddr())) {
+src/mem/ruby/system/RubyPort.cc:            pkt->getAddr(), id);
+src/mem/ruby/system/RubyPort.cc:                    "pio address\n", pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:                pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:                pkt->cmdString(), pkt->getAddr(),
+src/mem/ruby/system/RubyPort.cc:                    "pio address\n", pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:        assert(getOffset(pkt->getAddr()) + pkt->getSize() <=
+src/mem/ruby/system/RubyPort.cc:                    pkt->getAddr(), MachineType_Directory);
+src/mem/ruby/system/RubyPort.cc:    DPRINTF(RubyPort, "Functional access for address: %#x\n", pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:        DPRINTF(RubyPort, "Pio Request for address: 0x%#x\n", pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:    assert(pkt->getAddr() + pkt->getSize() <=
+src/mem/ruby/system/RubyPort.cc:           makeLineAddress(pkt->getAddr()) + RubySystem::getBlockSizeBytes());
+src/mem/ruby/system/RubyPort.cc:                  pkt->isWrite() ? "write" : "read", pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:            pkt->getAddr());
+src/mem/ruby/system/RubyPort.cc:    assert(system->isMemAddr(pkt->getAddr()) || system->isDeviceMemAddr(pkt));
+src/mem/ruby/system/RubyPort.cc:        } else if (ruby_port->system->isMemAddr(pkt->getAddr())) {
+src/mem/ruby/system/RubyPort.cc:RubyPort::PioResponsePort::getAddrRanges() const
+src/mem/ruby/system/RubyPort.cc:                ruby_port->request_ports[i]->getAddrRanges());
+src/mem/ruby/system/RubyPort.cc:    return ruby_port->system->isMemAddr(pkt->getAddr())
+src/mem/ruby/system/RubyPort.hh:        AddrRangeList getAddrRanges() const
+src/mem/ruby/system/RubyPort.hh:        AddrRangeList getAddrRanges() const;
+src/mem/ruby/system/RubySystem.cc:    Addr address(pkt->getAddr());
+src/mem/ruby/system/RubySystem.cc:    Addr addr(pkt->getAddr());
+src/mem/ruby/system/Sequencer.cc:                  seq_req.pkt->getAddr(), table_entry.second.size(),
+src/mem/ruby/system/Sequencer.cc:    Addr line_addr = makeLineAddress(pkt->getAddr());
+src/mem/ruby/system/Sequencer.cc:             "", "", printAddress(srequest->pkt->getAddr()), total_lat);
+src/mem/ruby/system/Sequencer.cc:    Addr request_address(pkt->getAddr());
+src/mem/ruby/system/Sequencer.cc:                pkt->cmdString(), pkt->getAddr());
+src/mem/ruby/system/Sequencer.cc:    if (m_controller->isBlocked(makeLineAddress(pkt->getAddr())) &&
+src/mem/ruby/system/Sequencer.cc:        std::make_shared<RubyRequest>(clockEdge(), pkt->getAddr(),
+src/mem/ruby/system/VIPERCoalescer.cc:    Addr line_addr = makeLineAddress(pkt->getAddr());
+src/mem/ruby/system/VIPERCoalescer.cc:        uint32_t tmpOffset = (tmpPkt->getAddr()) - line_addr;
+src/mem/ruby/system/VIPERCoalescer.cc:        msg = std::make_shared<RubyRequest>(clockEdge(), pkt->getAddr(),
+src/mem/ruby/system/VIPERCoalescer.cc:        msg = std::make_shared<RubyRequest>(clockEdge(), pkt->getAddr(),
+src/mem/ruby/system/VIPERCoalescer.cc:        writeCompletePkt->setAddr(pkt->getAddr());
+src/mem/ruby/system/VIPERCoalescer.cc:        if (makeLineAddress(writeCompletePkt->getAddr()) == addr) {
+src/mem/ruby/system/VIPERCoalescer.cc:        Addr addr = m_dataCache_ptr->getAddressAtIdx(i);
+src/mem/serial_link.cc:            pkt->cmdString(), pkt->getAddr());
+src/mem/serial_link.cc:            pkt->cmdString(), pkt->getAddr());
+src/mem/serial_link.cc:            pkt->getAddr(), transmitList.size());
+src/mem/serial_link.cc:            pkt->getAddr(), outstandingResponses);
+src/mem/serial_link.cc:SerialLink::SerialLinkResponsePort::getAddrRanges() const
+src/mem/serial_link.hh:        AddrRangeList getAddrRanges() const;
+src/mem/simple_mem.cc:             "saw %s to %#llx\n", pkt->cmdString(), pkt->getAddr());
+src/mem/simple_mem.cc:SimpleMemory::MemoryPort::getAddrRanges() const
+src/mem/simple_mem.cc:    ranges.push_back(memory.getAddrRange());
+src/mem/simple_mem.hh:        AddrRangeList getAddrRanges() const override;
+src/mem/xbar.cc:                                   getAddrRanges();
+src/mem/xbar.cc:                               getAddrRanges();
+src/mem/xbar.cc:BaseXBar::getAddrRanges() const
+src/mem/xbar.hh:    AddrRangeList getAddrRanges() const;
+src/mem/ramulator.cc:    long addr = resp_queue.front()->getAddr();
+src/mem/ramulator.cc:    //L3->call(pkt->getAddr());
+src/mem/ramulator.cc:      ramulator::Request req(pkt->getAddr(), ramulator::Request::Type::READ, read_cb_func, pkt->req->isPrefetch(), 0);
+src/mem/ramulator.cc:        // ramulator::Request req(pkt->getAddr(), ramulator::Request::Type::READ, read_cb_func, 0);
+src/mem/ramulator.cc:        ramulator::Request req(pkt->getAddr(), ramulator::Request::Type::WRITE, write_cb_func, false, 0);
+src/mem/ramulator.cc:                pkt->getAddr());
+src/mem/ramulator.hh:        AddrRangeList getAddrRanges() const {
+src/mem/ramulator.hh:            ranges.push_back(mem.getAddrRange());
+src/mem/physical.cc:            fatal_if(addrMap.insert(m->getAddrRange(), m) == addrMap.end(),
+src/mem/physical.cc:            fatal_if(m->getAddrRange().interleaved(),
+src/mem/physical.cc:            createBackingStore(m->getAddrRange(), unmapped_mems,
+src/mem/physical.cc:    const auto& m = addrMap.contains(pkt->getAddrRange());
+src/mem/physical.cc:    const auto& m = addrMap.contains(pkt->getAddrRange());
+src/mem/packet.cc:Packet::getAddrRange() const
+src/mem/packet.cc:    return RangeSize(getAddr(), getSize());
+src/mem/packet.cc:    const Addr func_start = getAddr();
+src/mem/packet.cc:    const Addr func_end   = getAddr() + getSize() - 1;
+src/mem/packet.cc:             getAddr(), getAddr() + getSize() - 1,
+src/mem/packet.cc:    return (getAddr() == addr) && (isSecure() == is_secure);
+src/mem/packet.cc:    return matchAddr(pkt->getAddr(), pkt->isSecure());
+src/mem/abstract_mem.cc:AbstractMemory::getAddrRange() const
+src/mem/abstract_mem.cc:                requestorId()), size, pkt->getAddr(),
+src/mem/abstract_mem.cc:                size, pkt->getAddr(), pkt->getUintX(byte_order),
+src/mem/abstract_mem.cc:            size, pkt->getAddr(), pkt->req->isUncacheable() ? 'U' : 'C');
+src/mem/abstract_mem.cc:                pkt->getAddr());
+src/mem/abstract_mem.cc:                pkt->getAddr());
+src/mem/abstract_mem.cc:    assert(pkt->getAddrRange().isSubset(range));
+src/mem/abstract_mem.cc:    uint8_t *host_addr = toHostAddr(pkt->getAddr());
+src/mem/abstract_mem.cc:    assert(pkt->getAddrRange().isSubset(range));
+src/mem/abstract_mem.cc:    uint8_t *host_addr = toHostAddr(pkt->getAddr());
+src/mem/packet.hh:    Addr getAddr() const { std::cout<<"is NDP pkt or not:"<<BC_IsNDP()<<"\n";assert(flags.isSet(VALID_ADDR)); return addr; }
+src/mem/packet.hh:    AddrRange getAddrRange() const;
+src/mem/packet.hh:        return getAddr() & Addr(blk_size - 1);
+src/mem/packet.hh:        return getAddr() & ~(Addr(blk_size - 1));
+src/mem/packet.hh:         * to void the getAddr() function from failing. It would be
+src/mem/packet.hh:         * packet represents a HTM command before calling getAddr().
+src/mem/packet.hh:                getAddr() <= (other->getAddr() + other->getSize() - 1) &&
+src/mem/packet.hh:                other->getAddr() <= (getAddr() + getSize() - 1)) {
+src/mem/packet.hh:                     " (addr: 0x%x, other addr: 0x%x)", getAddr(),
+src/mem/packet.hh:                     other->getAddr());
+src/mem/packet.hh:        return trySatisfyFunctional(other, other->getAddr(), other->isSecure(),
+src/sim/insttracer.hh:    Addr getAddr() const { return addr; }
+src/sim/probe/mem.hh:        addr(pkt->getAddr()),
+src/sim/system.cc:            deviceMemMap.at(id)->getAddrRange().contains(pkt->getAddr()));
+src/systemc/tests/include/SimpleBusAT.h:  sc_dt::uint64 getAddressOffset(unsigned int portId)
+src/systemc/tests/include/SimpleBusAT.h:  sc_dt::uint64 getAddressMask(unsigned int portId)
+src/systemc/tests/include/SimpleBusAT.h:        trans->set_address(trans->get_address() & getAddressMask(portId));
+src/systemc/tests/include/SimpleBusAT.h:    trans.set_address( trans.get_address() & getAddressMask(portId) );
+src/systemc/tests/include/SimpleBusAT.h:    sc_dt::uint64 addressOffset = getAddressOffset(portId);
+src/systemc/tests/include/SimpleBusAT.h:    sc_dt::uint64 addressMask = getAddressMask(portId);
+src/systemc/tests/include/SimpleBusAT.h:    sc_dt::uint64 maskedAddress = address & getAddressMask(portId);
+src/systemc/tests/include/SimpleBusLT.h:  sc_dt::uint64 getAddressOffset(unsigned int portId)
+src/systemc/tests/include/SimpleBusLT.h:  sc_dt::uint64 getAddressMask(unsigned int portId)
+src/systemc/tests/include/SimpleBusLT.h:    trans.set_address(trans.get_address() & getAddressMask(portId));
+src/systemc/tests/include/SimpleBusLT.h:    trans.set_address( trans.get_address() & getAddressMask(portId) );
+src/systemc/tests/include/SimpleBusLT.h:    sc_dt::uint64 addressOffset = getAddressOffset(portId);
+src/systemc/tests/include/SimpleBusLT.h:    sc_dt::uint64 addressMask = getAddressMask(portId);
+src/systemc/tests/include/SimpleBusLT.h:    sc_dt::uint64 maskedAddress = address & getAddressMask(portId);
+src/systemc/tlm_bridge/gem5_to_tlm.cc:    trans->set_address(packet->getAddr());
+src/systemc/tlm_bridge/gem5_to_tlm.hh:        getAddrRanges() const override
+src/systemc/tlm_bridge/gem5_to_tlm.hh:            return bridge.getAddrRanges();
+src/systemc/tlm_bridge/gem5_to_tlm.hh:    AddrRangeList getAddrRanges() const { return addrRanges; }
+util/tlm/src/sc_slave_port.cc:    trans.set_address(packet->getAddr());
+build/X86/arch/x86/generated/decoder-ns.hh.inc:// MwaitInst::mwait((['\n                           uint64_t m = 0;          //mem\n                           unsigned s = 0x8;        //size\n                           unsigned f = 0;          //flags\n                           readMemAtomic(xc, traceData,\n                                         xc->getAddrMonitor()->vAddr,\n                                         m, s, f);\n                           xc->mwaitAtomic(xc->tcBase());\n                           MicroHalt hltObj(machInst, mnemonic, 0x0);\n                           hltObj.execute(xc, traceData);\n                        '], {}))
+build/X86/arch/x86/generated/decoder-ns.cc.inc:// MwaitInst::mwait((['\n                           uint64_t m = 0;          //mem\n                           unsigned s = 0x8;        //size\n                           unsigned f = 0;          //flags\n                           readMemAtomic(xc, traceData,\n                                         xc->getAddrMonitor()->vAddr,\n                                         m, s, f);\n                           xc->mwaitAtomic(xc->tcBase());\n                           MicroHalt hltObj(machInst, mnemonic, 0x0);\n                           hltObj.execute(xc, traceData);\n                        '], {}))
+build/X86/arch/x86/generated/exec-ns.cc.inc:// MwaitInst::mwait((['\n                           uint64_t m = 0;          //mem\n                           unsigned s = 0x8;        //size\n                           unsigned f = 0;          //flags\n                           readMemAtomic(xc, traceData,\n                                         xc->getAddrMonitor()->vAddr,\n                                         m, s, f);\n                           xc->mwaitAtomic(xc->tcBase());\n                           MicroHalt hltObj(machInst, mnemonic, 0x0);\n                           hltObj.execute(xc, traceData);\n                        '], {}))
+build/X86/arch/x86/generated/exec-ns.cc.inc:                                         xc->getAddrMonitor()->vAddr,
+build/X86/arch/x86/generated/exec-ns.cc.inc:        initiateMemRead(xc, traceData, xc->getAddrMonitor()->vAddr, s, f);
+build/X86/arch/x86/generated/decode-method.cc.inc:                              // MwaitInst::mwait((['\n                           uint64_t m = 0;          //mem\n                           unsigned s = 0x8;        //size\n                           unsigned f = 0;          //flags\n                           readMemAtomic(xc, traceData,\n                                         xc->getAddrMonitor()->vAddr,\n                                         m, s, f);\n                           xc->mwaitAtomic(xc->tcBase());\n                           MicroHalt hltObj(machInst, mnemonic, 0x0);\n                           hltObj.execute(xc, traceData);\n                        '], {}))

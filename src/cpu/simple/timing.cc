@@ -77,9 +77,11 @@ TimingSimpleCPU::TimingCPUPort::TickEvent::schedule(PacketPtr _pkt, Tick t)
 TimingSimpleCPU::TimingSimpleCPU(TimingSimpleCPUParams *p)
     : BaseSimpleCPU(p), fetchTranslation(this), icachePort(this),
       dcachePort(this), ifetch_pkt(NULL), dcache_pkt(NULL), previousCycle(0),
-      fetchEvent([this]{ fetch(); }, name())
+      fetchEvent([this]{ fetch(); }, name()),
+      BC_ndpEvent([this]{ BC_ndpCheck(); }, name())
 {
     _status = Idle;
+    BC_ndpCheck();
 }
 
 
@@ -679,6 +681,49 @@ TimingSimpleCPU::finishTranslation(WholeTranslationState *state)
 }
 
 
+//@BCDRAM start
+void
+TimingSimpleCPU::BC_ndpCheck()
+{
+    SimpleExecContext &t_info = *threadInfo[curThread];
+    SimpleThread* thread = t_info.thread;
+    BC_thread_ptr = (uint64_t) thread;
+    thread->dtb->BC_block_size = cacheLineSize();
+    if( thread->dtb->BC_access_time_cache != 0 )
+    {
+    // announce that the flag is detected by the CPU
+	std::cout<<"\n///////////////////////////////////////////////////////////////////////////////\n";
+	std::cout<<"curTick()-"<<curTick()<<"-src/cpu/simple/timing.cc::BC_ndpCheck()->CHECKING and SENDING special packet!!\n";
+	//Create Request to send NDP request to cache / DRAM
+        Addr addr = BC_vaddr;
+        unsigned size = 8;  //8 Bytes, the size actually doesn't matter
+        Request::Flags flags =
+	0x00000001 | 0x00000002 | 0x00000004 | 0x00000008 | 0x00000010 | 0x00000020 | 0x10000000;
+
+        const Addr pc = thread->instAddr();
+
+        RequestPtr req = std::make_shared<Request>(
+                addr, size, flags, dataRequestorId(), pc, thread->contextId());
+        req->taskId(taskId());
+	req->BC_SetNDP();
+	//Create Packet
+	uint8_t *data = new uint8_t[size];
+	assert(data);
+	uint64_t rc = 0lu;
+	memcpy (data, &rc, size);
+	PacketPtr pkt = buildPacket(req, true);  // isRead() == true
+	pkt->dataDynamic<uint8_t>(data);
+	dcachePort.sendTimingReq(pkt);
+    //  disable the BC flag if all mem request are sent
+        thread->dtb->BC_access_time_cache--;
+	 
+//	thread->dtb->BC_flag=false;
+    }
+    schedule(BC_ndpEvent, nextCycle());
+
+}
+
+//@BCDRAM end
 void
 TimingSimpleCPU::fetch()
 {
@@ -1121,7 +1166,14 @@ bool
 TimingSimpleCPU::DcachePort::recvTimingResp(PacketPtr pkt)
 {
     DPRINTF(SimpleCPU, "Received load/store response %#x\n", pkt->getAddr());
-
+    //@BCDRAM start
+    if( pkt->BC_IsNDP() )
+    {
+	std::cout<<"curTick()-"<<curTick()<<"-src/cpu/simple/timing.cc::recvTimingResp()->received NDP response\n";
+	std::cout<<"///////////////////////////////////////////////////////////////////////////////\n";
+        return true;
+    }
+    //@BCDRAM end
     // The timing CPU is not really ticked, instead it relies on the
     // memory system (fetch and load/store) to set the pace.
     if (!tickEvent.scheduled()) {

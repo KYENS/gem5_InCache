@@ -294,6 +294,9 @@ class TimingSimpleCPU : public BaseSimpleCPU
                          AtomicOpFunctorPtr amo_op) override;
 
     void fetch();
+    //@BCDRAM start
+    void BC_ndpCheck();
+    //@BCDRAM end
     void sendFetch(const Fault &fault,
                    const RequestPtr &req, ThreadContext *tc);
     void completeIfetch(PacketPtr );
@@ -328,6 +331,9 @@ class TimingSimpleCPU : public BaseSimpleCPU
   private:
 
     EventFunctionWrapper fetchEvent;
+    //@BCDRAM start
+    EventFunctionWrapper BC_ndpEvent;
+    //@BCDRAM start
 
     struct IprEvent : Event {
         Packet *pkt;

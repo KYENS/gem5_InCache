@@ -69,6 +69,7 @@ class L1Cache(Cache):
            This must be defined in a subclass"""
         raise NotImplementedError
 
+
 class L1ICache(L1Cache):
     """Simple L1 instruction cache with default values"""
 
@@ -106,6 +107,32 @@ class L1DCache(L1Cache):
     def connectCPU(self, cpu):
         """Connect this cache's port to a CPU dcache port"""
         self.cpu_side = cpu.dcache_port
+
+class L2Cache(Cache):
+    """Simple L2 Cache with default values"""
+
+    # Default parameters
+    size = '256kB'
+    assoc = 8
+    tag_latency = 20
+    data_latency = 20
+    response_latency = 20
+    mshrs = 20
+    tgts_per_mshr = 12
+
+    SimpleOpts.add_option('--l2s_size', help="smart L2 cache size. Default: %s" % size)
+
+    def __init__(self, opts=None):
+        super(L2Cache, self).__init__()
+        if not opts or not opts.l2_size:
+            return
+        self.size = opts.l2_size
+
+    def connectCPUSideBus(self, bus):
+        self.cpu_side = bus.master
+
+    def connectMemSideBus(self, bus):
+        self.mem_side = bus.slave
 
 class L2Cache(Cache):
     """Simple L2 Cache with default values"""

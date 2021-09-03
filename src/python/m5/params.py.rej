@@ -1,0 +1,11 @@
+--- src/python/m5/params.py
++++ src/python/m5/params.py
+@@ -222,7 +222,7 @@ class ParamDesc(object):
+         return self.ptype(value).pretty_print(value)
+ 
+     def cxx_predecls(self, code):
+-        code('#include <stddef.h>')
++        code('#include <cstddef>')
+         self.ptype.cxx_predecls(code)
+ 
+     def pybind_predecls(self, code):

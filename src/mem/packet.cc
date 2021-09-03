@@ -552,3 +552,27 @@ Packet::getHtmTransactionUid() const
     assert(flags.isSet(FROM_TRANSACTION));
     return htmTransactionUid;
 }
+
+
+//@BCDRAM start
+int
+Packet::BC_GetQID() const
+{
+	return BC_qid;
+}
+void
+Packet::BC_SetQID(int qid) 
+{
+	BC_qid = qid;
+}
+bool
+Packet::BC_IsNDP() const
+{
+	return BC_isNDP;
+}
+void
+Packet::BC_SetNDP() 
+{
+	BC_isNDP = true;
+}
+//@BCDRAM end

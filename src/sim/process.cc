@@ -66,6 +66,9 @@
 #include "sim/redirect_path.hh"
 #include "sim/syscall_desc.hh"
 #include "sim/system.hh"
+//@BCDRAM start
+#include "sim/serialize.hh"
+//@BCDRAM end
 
 using namespace std;
 using namespace TheISA;
@@ -76,14 +79,35 @@ namespace
 typedef std::vector<Process::Loader *> LoaderList;
 
 LoaderList &
-process_loaders()
-{
+	process_loaders()
+	{
     static LoaderList loaders;
     return loaders;
 }
 
 } // anonymous namespace
 
+//@BCDRAM start
+struct InCacheRequest;
+std::map<uint64_t,Serializable::InCacheRequest*>* 
+Serializable::BC_InCache= new std::map<uint64_t,Serializable::InCacheRequest*>();
+uint64_t Serializable::BC_QID=0;
+
+int Serializable::BC_block_size=0;
+
+//-------------For Translation----------------
+uint64_t Serializable::BC_process_ptr=0;  // These two are for retrieving process
+uint64_t Serializable::BC_thread_ptr=0;   // and thread in SE mode
+
+uint64_t Serializable::BC_vaddr = 0;         //vaddr that we are using
+uint64_t Serializable::BC_paddr = 0;         //translated paddr
+uint64_t Serializable::BC_paddr_start = 0;  // paddr offset
+uint8_t* Serializable::BC_back_storage_ptr = new uint8_t;
+//---------------------------------------------------------------
+uint64_t Serializable::BC_latency_cache=0;
+uint64_t Serializable::BC_tick_cache=0;
+uint64_t Serializable::BC_access_time_cache=0;
+//@BCDRAM end
 Process::Loader::Loader()
 {
     process_loaders().emplace_back(this);
@@ -520,6 +544,8 @@ ProcessParams::create()
     fatal_if(!obj_file, "Cannot load object file %s.", executable);
 
     Process *process = Process::tryLoaders(this, obj_file);
+
+    Serializable::BC_process_ptr=(uint64_t) process;
     fatal_if(!process, "Unknown error creating process object.");
 
     return process;

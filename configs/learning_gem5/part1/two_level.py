@@ -68,8 +68,7 @@ isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 # grab the specific path to the binary
 thispath = os.path.dirname(os.path.realpath(__file__))
 binary = os.path.join(thispath, '../../../',
-                      'tests/test-progs/hello/bin/', isa, 'linux/hello')
-
+                      'tests/ndp-test-progs/', isa, 'test1')
 # Check if there was a binary passed in via the command line and error if
 # there are too many arguments
 if len(args) == 1:
@@ -102,7 +101,7 @@ system.cpu.icache.connectCPU(system.cpu)
 system.cpu.dcache.connectCPU(system.cpu)
 
 # Create a memory bus, a coherent crossbar, in this case
-system.l2bus = L2XBar()
+system.l2bus = SystemXBar()
 
 # Hook the CPU ports up to the l2bus
 system.cpu.icache.connectBus(system.l2bus)
@@ -110,13 +109,16 @@ system.cpu.dcache.connectBus(system.l2bus)
 
 # Create an L2 cache and connect it to the l2bus
 system.l2cache = L2Cache(opts)
+system.S2cache = L2Cache(opts)
 system.l2cache.connectCPUSideBus(system.l2bus)
+system.S2cache.connectCPUSideBus(system.l2bus)
 
 # Create a memory bus
-system.membus = SystemXBar()
+system.membus = L2XBar()
 
 # Connect the L2 cache to the membus
 system.l2cache.connectMemSideBus(system.membus)
+system.S2cache.connectMemSideBus(system.membus)
 
 # create the interrupt controller for the CPU
 system.cpu.createInterruptController()
@@ -132,9 +134,9 @@ if m5.defines.buildEnv['TARGET_ISA'] == "x86":
 system.system_port = system.membus.slave
 
 # Create a DDR3 memory controller
-system.mem_ctrl = MemCtrl()
-system.mem_ctrl.dram = DDR3_1600_8x8()
-system.mem_ctrl.dram.range = system.mem_ranges[0]
+system.mem_ctrl = Ramulator()
+system.mem_ctrl.config_file = "configs/ramulator/DDR4-config.cfg"
+system.mem_ctrl.range = system.mem_ranges[0]
 system.mem_ctrl.port = system.membus.master
 
 # Create a process for a simple "Hello World" application

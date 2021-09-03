@@ -156,6 +156,16 @@ CoherentXBar::recvTimingReq(PacketPtr pkt, PortID cpu_side_port_id)
     // determine the destination based on the destination address range
     PortID mem_side_port_id = findPort(pkt->getAddrRange());
 
+    //@BCDRAM
+    if( name()=="system.l2bus"){
+	    if( pkt->BC_IsNDP() ){
+		    mem_side_port_id=1;
+		    std::cout<<name()<<"::src/mem/coherent_bar.cci::"<<memSidePorts[mem_side_port_id]->name()<<","<<mem_side_port_id<</* ","<<pkt->getAddrRange()<<*/"\n";
+	    }else{
+		    mem_side_port_id=0;
+	    }
+    }
+    //@BCDRAM
     // test if the crossbar should be considered occupied for the current
     // port, and exclude express snoops from the check
     if (!is_express_snoop &&
@@ -285,7 +295,7 @@ CoherentXBar::recvTimingReq(PacketPtr pkt, PortID cpu_side_port_id)
             }
 
             // since it is a normal request, attempt to send the packet
-            success = memSidePorts[mem_side_port_id]->sendTimingReq(pkt);
+	    success = memSidePorts[mem_side_port_id]->sendTimingReq(pkt);
         } else {
             // no need to forward, turn this packet around and respond
             // directly

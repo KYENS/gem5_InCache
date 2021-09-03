@@ -238,6 +238,12 @@ PhysicalMemory::createBackingStore(AddrRange range,
         DPRINTF(AddrRanges, "Mapping memory %s to backing store\n",
                 m->name());
         m->setBackingStore(pmem);
+	//@BCDRAM start
+	BC_back_storage_ptr = pmem;
+	std::cout<<"###PhysicalMemory::PhysicalMemory  Abstract_mem                  pmemAddr :  " << uint64_t(pmem) << std::endl;
+        printf("###     PhysicalMemory::PhysicalMemory  Abstract_mem                 pmemAddr : %d", (*pmem));
+
+	//@BCDRAM end
     }
 }
 

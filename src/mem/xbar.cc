@@ -419,12 +419,12 @@ BaseXBar::recvRangeChange(PortID mem_side_port_id)
                     r.to_string(), mem_side_port_id);
             if (portMap.insert(r, mem_side_port_id) == portMap.end()) {
                 PortID conflict_id = portMap.intersects(r)->second;
-                fatal("%s has two ports responding within range "
-                      "%s:\n\t%s\n\t%s\n",
-                      name(),
-                      r.to_string(),
-                      memSidePorts[mem_side_port_id]->getPeer(),
-                      memSidePorts[conflict_id]->getPeer());
+             //   fatal("%s has two ports responding within range "
+             //         "%s:\n\t%s\n\t%s\n",
+             //         name(),
+             //         r.to_string(),
+             //         memSidePorts[mem_side_port_id]->getPeer(),
+             //         memSidePorts[conflict_id]->getPeer());
             }
         }
     }

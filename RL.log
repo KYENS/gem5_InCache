@@ -1,0 +1,121 @@
+src/cpu/trace/trace_cpu.cc:    // Print readyList
+src/cpu/trace/trace_cpu.cc:    auto free_itr = readyList.begin();
+src/cpu/trace/trace_cpu.cc:    for (auto& free_node : readyList) {
+src/cpu/trace/trace_cpu.cc:    DPRINTFR(TraceCPUData, "\tdepGraph = %d, readyList = %d, "
+src/cpu/trace/trace_cpu.cc:            "depFreeQueue = %d ,", depGraph.size(), readyList.size(),
+src/cpu/trace/trace_cpu.cc:    // then issue it, i.e. add the node to readyList.
+src/cpu/trace/trace_cpu.cc:    // Proceed to execute from readyList
+src/cpu/trace/trace_cpu.cc:    auto free_itr = readyList.begin();
+src/cpu/trace/trace_cpu.cc:    // Iterate through readyList until the next free node has its execute
+src/cpu/trace/trace_cpu.cc:    // tick later than curTick or the end of readyList is reached
+src/cpu/trace/trace_cpu.cc:    while (free_itr->execTick <= curTick() && free_itr != readyList.end()) {
+src/cpu/trace/trace_cpu.cc:            // first node in the readyList.
+src/cpu/trace/trace_cpu.cc:                      "the first node in the readyList.\n");
+src/cpu/trace/trace_cpu.cc:        // first node in readyList then, will be the failed node.
+src/cpu/trace/trace_cpu.cc:        // After executing the node, remove from readyList and delete node.
+src/cpu/trace/trace_cpu.cc:        readyList.erase(free_itr);
+src/cpu/trace/trace_cpu.cc:        free_itr = readyList.begin();
+src/cpu/trace/trace_cpu.cc:    // Print readyList, sizes of queues and resource status after updating
+src/cpu/trace/trace_cpu.cc:        DPRINTFR(TraceCPUData, "\tdepGraph = %d, readyList = %d, "
+src/cpu/trace/trace_cpu.cc:                "depFreeQueue = %d ,", depGraph.size(), readyList.size(),
+src/cpu/trace/trace_cpu.cc:    // readyList else retry from cache will schedule the event. If the ready
+src/cpu/trace/trace_cpu.cc:    if (!readyList.empty()) {
+src/cpu/trace/trace_cpu.cc:        Tick next_event_tick = std::max(readyList.begin()->execTick,
+src/cpu/trace/trace_cpu.cc:    } else if (readyList.empty() && !depFreeQueue.empty() &&
+src/cpu/trace/trace_cpu.cc:    // If trace is completely read, readyList is empty and depGraph is empty,
+src/cpu/trace/trace_cpu.cc:    if (depGraph.empty() && readyList.empty() && traceComplete &&
+src/cpu/trace/trace_cpu.cc:        // If resources are free only then add to readyList
+src/cpu/trace/trace_cpu.cc:            " to readyList, occupying resources.\n", node_ptr->seqNum);
+src/cpu/trace/trace_cpu.cc:        // could happen that the readyList is empty and we got here via a
+src/cpu/trace/trace_cpu.cc:        Tick next_event_tick = readyList.empty() ? owner.clockEdge(Cycles(1)) :
+src/cpu/trace/trace_cpu.cc:            std::max(readyList.begin()->execTick, owner.clockEdge(Cycles(1)));
+src/cpu/trace/trace_cpu.cc:    // Iterator to readyList
+src/cpu/trace/trace_cpu.cc:    auto itr = readyList.begin();
+src/cpu/trace/trace_cpu.cc:    // If the readyList is empty, simply insert the new node at the beginning
+src/cpu/trace/trace_cpu.cc:    if (itr == readyList.end()) {
+src/cpu/trace/trace_cpu.cc:        readyList.insert(itr, ready_node);
+src/cpu/trace/trace_cpu.cc:        elasticStats.maxReadyListSize = std::max<double>(readyList.size(),
+src/cpu/trace/trace_cpu.cc:    while (!found && itr != readyList.end()) {
+src/cpu/trace/trace_cpu.cc:    readyList.insert(itr, ready_node);
+src/cpu/trace/trace_cpu.cc:    // Update the stat for max size reached of the readyList
+src/cpu/trace/trace_cpu.cc:    elasticStats.maxReadyListSize = std::max<double>(readyList.size(),
+src/cpu/trace/trace_cpu.cc:    auto itr = readyList.begin();
+src/cpu/trace/trace_cpu.cc:    if (itr == readyList.end()) {
+src/cpu/trace/trace_cpu.cc:        DPRINTF(TraceCPUData, "readyList is empty.\n");
+src/cpu/trace/trace_cpu.cc:    DPRINTF(TraceCPUData, "Printing readyList:\n");
+src/cpu/trace/trace_cpu.cc:    while (itr != readyList.end()) {
+src/cpu/trace/trace_cpu.cc:    // when node is executed and taken off from readyList.
+src/cpu/trace/trace_cpu.hh: * the readyList but also load nodes that are executed (and thus removed from
+src/cpu/trace/trace_cpu.hh: * readyList) but are not complete. ReadyList handles what and when to execute
+src/cpu/trace/trace_cpu.hh: * complete nodes from the readyList.
+src/cpu/trace/trace_cpu.hh:             * flight nodes. This includes all nodes that are in the readyList
+src/cpu/trace/trace_cpu.hh:             * present in the readyList. But such loads are not yet complete
+src/cpu/trace/trace_cpu.hh:         * sorted readyList. First attempt to issue the pending dependency-free
+src/cpu/trace/trace_cpu.hh:         * the readyList. Then iterate through the readyList and when a node
+src/cpu/trace/trace_cpu.hh:         * Add a ready node to the readyList. When inserting, ensure the nodes
+src/cpu/trace/trace_cpu.hh:        /** Print readyList for debugging using debug flag TraceCPUData. */
+src/cpu/trace/trace_cpu.hh:         * complete. If resources are available then add it to the readyList,
+src/cpu/trace/trace_cpu.hh:         * @return true if node was added to readyList
+src/cpu/trace/trace_cpu.hh:        std::list<ReadyNode> readyList;
+src/gpu-compute/register_file.hh:    // to move a wave from the readyList to the schList.
+src/gpu-compute/schedule_stage.cc:             "Scheduler should have same number of entries as CU's readyList");
+src/gpu-compute/schedule_stage.cc:    // Update readyList
+src/gpu-compute/schedule_stage.cc:        int readyListSize = fromScoreboardCheck.readyWFs(j).size();
+src/gpu-compute/schedule_stage.cc:        if (!readyListSize) {
+src/gpu-compute/schedule_stage.cc:        int readyListSize = fromScoreboardCheck.readyWFs(j).size();
+src/gpu-compute/schedule_stage.cc:        if (!readyListSize) {
+src/gpu-compute/schedule_stage.hh:    // Number of cycles with empty (or not empty) readyList, per execution
+src/gpu-compute/schedule_stage.hh:    // was on the readyList and picked by scheduler, but was unable to be
+src/gpu-compute/schedule_stage.hh:    // from readyList. Waves are removed from this list and placed on
+src/gpu-compute/scoreboard_check_stage.cc:                        "Adding to readyList[%d]: SIMD[%d] WV[%d]: %d: %s\n",
+src/gpu-compute/scoreboard_check_stage.hh: * added to readyList.
+src/gpu-compute/wavefront.hh:    // Indices into readyList/dispatchList of resources used by this
+src/gpu-compute/compute_unit.cc:// index into readyList of the first memory unit
+src/gpu-compute/compute_unit.cc:// index into readyList of the last memory unit
+src/gpu-compute/compute_unit.cc:// index into readyList of Scalar ALU unit used by wavefront
+src/gpu-compute/compute_unit.cc:// index into readyList of Global Memory unit used by wavefront
+src/gpu-compute/compute_unit.cc:// index into readyList of Local Memory unit used by wavefront
+src/gpu-compute/compute_unit.cc:// index into readyList of Scalar Memory unit used by wavefront
+src/gpu-compute/compute_unit.hh:    // index into readyList of the first memory unit
+src/gpu-compute/compute_unit.hh:    // index into readyList of the last memory unit
+src/gpu-compute/compute_unit.hh:    // index into readyList of SALU used by wavefront
+src/gpu-compute/compute_unit.hh:    // index into readyList of Global Memory unit used by wavefront
+src/gpu-compute/compute_unit.hh:    // index into readyList of Local Memory unit used by wavefront
+src/gpu-compute/compute_unit.hh:    // index into readyList of Scalar Memory unit used by wavefront
+src/gpu-compute/compute_unit.hh:     * SCB to SCH: readyList provides per exec resource list of waves that
+src/mem/cache/mshr.hh:     * @sa MissQueue, MSHRQueue::readyList
+src/mem/cache/mshr_queue.hh:     * readyList or deallocates the MSHR if it does not expect a response.
+src/mem/cache/mshr_queue.hh:        return !readyList.empty();
+src/mem/cache/queue.hh:    typename Entry::List readyList;
+src/mem/cache/queue.hh:        if (readyList.empty() ||
+src/mem/cache/queue.hh:            readyList.back()->readyTime <= entry->readyTime) {
+src/mem/cache/queue.hh:            return readyList.insert(readyList.end(), entry);
+src/mem/cache/queue.hh:        for (auto i = readyList.begin(); i != readyList.end(); ++i) {
+src/mem/cache/queue.hh:                return readyList.insert(i, entry);
+src/mem/cache/queue.hh:        for (const auto& ready_entry : readyList) {
+src/mem/cache/queue.hh:     * Returns the WriteQueueEntry at the head of the readyList.
+src/mem/cache/queue.hh:        if (readyList.empty() || readyList.front()->readyTime > curTick()) {
+src/mem/cache/queue.hh:        return readyList.front();
+src/mem/cache/queue.hh:        return readyList.empty() ? MaxTick : readyList.front()->readyTime;
+src/mem/cache/queue.hh:            readyList.erase(entry->readyIter);
+src/mem/cache/write_queue.hh:     * the readyList or deallocates the entry if it does not expect a
+src/mem/cache/write_queue_entry.hh:     * @sa MissQueue, WriteQueue::readyList
+src/mem/cache/mshr_queue.cc:        readyList.erase(mshr->readyIter);
+src/mem/cache/mshr_queue.cc:        mshr->readyIter = readyList.insert(readyList.begin(), mshr);
+src/mem/cache/mshr_queue.cc:    auto it = std::find_if(mshr->readyIter, readyList.end(),
+src/mem/cache/mshr_queue.cc:    readyList.splice(it, readyList, mshr->readyIter);
+src/mem/cache/mshr_queue.cc:    readyList.erase(mshr->readyIter);
+src/systemc/core/scheduler.cc:    while ((p = readyListMethods.getNext()))
+src/systemc/core/scheduler.cc:    while ((p = readyListThreads.getNext()))
+src/systemc/core/scheduler.cc:        readyListMethods.pushLast(p);
+src/systemc/core/scheduler.cc:        readyListThreads.pushLast(p);
+src/systemc/core/scheduler.cc:    bool empty = readyListMethods.empty() && readyListThreads.empty();
+src/systemc/core/scheduler.hh:            readyListMethods.pushFirst(_current);
+src/systemc/core/scheduler.hh:        readyListMethods.pushFirst(p);
+src/systemc/core/scheduler.hh:        readyListMethods.pushFirst(p);
+src/systemc/core/scheduler.hh:        return !readyListMethods.empty() || !readyListThreads.empty() ||
+src/systemc/core/scheduler.hh:        Process *p = readyListMethods.getNext();
+src/systemc/core/scheduler.hh:        return p ? p : readyListThreads.getNext();
+src/systemc/core/scheduler.hh:        return (readyListMethods.empty() && readyListThreads.empty() &&
+src/systemc/core/scheduler.hh:    ProcessList readyListMethods;
+src/systemc/core/scheduler.hh:    ProcessList readyListThreads;

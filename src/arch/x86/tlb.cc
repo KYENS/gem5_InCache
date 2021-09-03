@@ -502,6 +502,29 @@ void
 TLB::translateTiming(const RequestPtr &req, ThreadContext *tc,
         Translation *translation, Mode mode)
 {
+    //@BCDRAM start
+    if(!translation){
+	uint64_t vaddr = req->getPaddr();
+        std::cout<<"src/arch/x86/tlb.cc::translateTiming()->lookup:"<<vaddr<<"\n";
+	TlbEntry* entry;// = lookup(vaddr);
+	std::cout<<"src/arch/x86/tlb.cc::translateTiming()->entry miss\n";
+        if (FullSystem) {
+	    std::cout<<"src/arch/x86/tlb.cc::translateTiming()->lookupFS:"<<vaddr<<"\n";
+            entry = lookup(vaddr);
+	} else {
+	    std::cout<<"src/arch/x86/tlb.cc::translateTiming()->lookupSE:"<<vaddr<<"\n";
+	    Process *p = (Process*) BC_process_ptr ;//tc->getProcessPtr();
+	    uint64_t paddr=0;
+	    bool nouse_b = p->pTable->translate(vaddr, paddr);
+	    if(nouse_b){
+                std::cout<<"src/arch/x86/tlb.cc::translateTiming()->lookupSE paddr:"<<paddr<<"\n";
+		req->setPaddr(paddr);
+                std::cout<<"copy addr:"<<(uint64_t) req->getPaddr()<<std::endl;
+	    }
+	}
+	return;
+    }
+    //@BCDRAM end
     bool delayedResponse;
     assert(translation);
     Fault fault =

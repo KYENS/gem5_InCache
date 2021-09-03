@@ -64,6 +64,11 @@ MSHRQueue::allocate(Addr blk_addr, unsigned blk_size, PacketPtr pkt,
     freeList.pop_front();
 
     mshr->allocate(blk_addr, blk_size, pkt, when_ready, order, alloc_on_fill);
+    /* @BCDRAM start */ 
+    //if (pkt->BC_IsNDP()){
+    //    std::cout<<"blk_addr"<<blk_addr <<", blk_size"<<blk_size <<", pkt"<<pkt <<", when_ready"<<when_ready <<", order"<<order <<", alloc_on_fill"<<alloc_on_fill <<std::endl; 
+    //}
+    /* @BCDRAM end */
     mshr->allocIter = allocatedList.insert(allocatedList.end(), mshr);
     mshr->readyIter = addToReadyList(mshr);
 

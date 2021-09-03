@@ -60,6 +60,12 @@
 #include "params/BaseCache.hh"
 #include "params/WriteAllocator.hh"
 #include "sim/core.hh"
+//@BCDRAM start
+#include "cpu/simple_thread.hh"
+#include "arch/generic/tlb.hh"
+#include "arch/x86/pagetable.hh"
+#include "arch/x86/tlb.hh"
+//@BCDRAM end
 
 using namespace std;
 
@@ -105,7 +111,8 @@ BaseCache::BaseCache(const BaseCacheParams *p, unsigned blk_size)
       missCount(p->max_miss_count),
       addrRanges(p->addr_ranges.begin(), p->addr_ranges.end()),
       system(p->system),
-      stats(*this)
+      stats(*this),
+    /*BCDRAM*/	BC_InCacheCheckEvent([this]{ BC_InCacheCheck(); }, name())
 {
     // the MSHR queue has no reserve entries as we check the MSHR
     // queue on every single allocation, whereas the write queue has
@@ -121,12 +128,24 @@ BaseCache::BaseCache(const BaseCacheParams *p, unsigned blk_size)
     tags->tagsInit();
     if (prefetcher)
         prefetcher->setCache(this);
+    //@BCDRAM start
+    BC_InCacheCheck();
+    //@BCDRAM end
 }
 
 BaseCache::~BaseCache()
 {
     delete tempBlock;
 }
+
+//@BCDRAM start
+void
+BaseCache::BC_InCacheCheck()
+{
+    std::cout<<"\nBC in cache checking \n";
+    schedule(BC_InCacheCheckEvent, curTick()+10 );
+}
+//@BCDRAM end
 
 void
 BaseCache::CacheResponsePort::setBlocked()
@@ -244,6 +263,7 @@ BaseCache::handleTimingReqMiss(PacketPtr pkt, MSHR *mshr, CacheBlk *blk,
         writeAllocator->updateMode(pkt->getAddr(), pkt->getSize(),
                                    pkt->getBlockAddr(blkSize));
     }
+
 
     if (mshr) {
         /// MSHR hit
@@ -372,8 +392,8 @@ BaseCache::recvTimingReq(PacketPtr pkt)
 
         handleTimingReqHit(pkt, blk, request_time);
     } else {
-        handleTimingReqMiss(pkt, blk, forward_time, request_time);
 
+        handleTimingReqMiss(pkt, blk, forward_time, request_time);
         ppMiss->notify(pkt);
     }
 
@@ -402,6 +422,13 @@ void
 BaseCache::recvTimingResp(PacketPtr pkt)
 {
     assert(pkt->isResponse());
+    //@BCDRAM start
+    if(pkt->BC_IsNDP() )
+    {
+        std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingResp()->NDPpkt received\n";
+	return;
+    }
+    //@BCDRAM end
 
     // all header delay should be paid for by the crossbar, unless
     // this is a prefetch response from above
@@ -534,8 +561,38 @@ BaseCache::recvTimingResp(PacketPtr pkt)
     DPRINTF(CacheVerbose, "%s: Leaving with %s\n", __func__, pkt->print());
     delete pkt;
 }
+//@BCDRAM start
+uint8_t*
+BaseCache::BC_translateAddr(uint64_t vaddr)
+{
+    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->vaddr:"<<vaddr<<"\n";
+    //SimpleThread* tc = (SimpleThread*) ( vaddr);//std::make_shared<Request>();
+    RequestPtr req = std::make_shared<Request>();
+    req->setPaddr(vaddr);
 
+    ((SimpleThread*) BC_thread_ptr)->dtb->translateTiming(req,NULL,NULL,BaseTLB::Execute);
+    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->paddr:"<<req->getPaddr()<<"\n";
+    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->BC_back_storage_ptr:"<<(uint64_t)BC_back_storage_ptr<<"\n";
+    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->BC_paddr_start:"<<BC_paddr_start<<"\n";
+    uint8_t* host_ptr = BC_back_storage_ptr +req->getPaddr() - BC_paddr_start ;
+    for(int i=0;i<400;i++){
+	if(i%8==0)
+	    printf(" %x %d\n",host_ptr[i],i);
+     	else
+	    printf(" %x",( host_ptr[i]==0 )?0:host_ptr[i]);
+    }
 
+    std::cout<<"curTick()-"<<curTick()<<"-src/mem/cache/base.cc::translateAddr()->host_ptr:"<<(uint64_t)host_ptr<<", "<<host_ptr[0]<<", "<<host_ptr[1]<<"\n";
+    return host_ptr;
+}
+
+#include <algorithm>
+void
+BaseCache::BC_processInCache()
+{
+    std::cout<<"curTick()-"<<curTick()<<"-src/mem/cache/base.cc::processInCache()\n";
+}
+//@BCDRAM end
 Tick
 BaseCache::recvAtomic(PacketPtr pkt)
 {
@@ -739,6 +796,7 @@ BaseCache::getNextQueueEntry()
         return wq_entry;
     } else if (miss_mshr) {
         // need to check for conflicting earlier writeback
+
         WriteQueueEntry *conflict_mshr = writeBuffer.findPending(miss_mshr);
         if (conflict_mshr) {
             // not sure why we don't check order here... it was in the
@@ -1281,6 +1339,9 @@ BaseCache::access(PacketPtr pkt, CacheBlk *&blk, Cycles &lat,
 
     lat = calculateAccessLatency(blk, pkt->headerDelay, tag_latency);
 
+    //@BCDRAM start
+    if(pkt->BC_IsNDP() ) return false;
+    //@BCDRAM end
     if (!blk && pkt->isLLSC() && pkt->isWrite()) {
         // complete miss on store conditional... just give up now
         pkt->req->setExtraData(0);
@@ -2303,7 +2364,7 @@ BaseCache::CpuSidePort::tryTiming(PacketPtr pkt)
     if (cache->system->bypassCaches() || pkt->isExpressSnoop()) {
         // always let express snoop packets through even if blocked
         return true;
-    } else if (blocked || mustSendRetry) {
+    } else if (blocked || mustSendRetry ) {
         // either already committed to send a retry, or blocked
         mustSendRetry = true;
         return false;
@@ -2317,7 +2378,21 @@ BaseCache::CpuSidePort::recvTimingReq(PacketPtr pkt)
 {
     assert(pkt->isRequest());
 
-    if (cache->system->bypassCaches()) {
+    //@BCDRAM start
+    if (pkt->BC_IsNDP() ){
+	if(name()=="system.cpu.dcache.cpu_side_port"){
+            bool M5_VAR_USED success = cache->memSidePort.sendTimingReq(pkt);
+            std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L1 DCACHE"<<std::endl;
+            assert(success);
+	}else{
+	    
+            cache->recvTimingReq(pkt);
+            std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L2 SCACHE"<<std::endl;
+	}	
+        return true;
+    }   
+    //@BCDRAM end
+    else if (cache->system->bypassCaches()) {
         // Just forward the packet if caches are disabled.
         // @todo This should really enqueue the packet rather
         bool M5_VAR_USED success = cache->memSidePort.sendTimingReq(pkt);

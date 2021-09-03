@@ -225,6 +225,41 @@ class Serializable
     };
 
   public:
+    //@BCDRAM start
+    struct InCacheRequest{
+	uint64_t access_num;
+	uint64_t vaddr_start;
+	bool fetching;
+	uint64_t latency;
+	InCacheRequest(){
+            access_num = 0;
+	    vaddr_start = 0;
+            latency = 0;
+	    fetching = false;
+	}
+	InCacheRequest(uint64_t NumOfAccess, uint64_t VirtualAddr, uint64_t Latency){
+            access_num = NumOfAccess;
+	    vaddr_start = VirtualAddr;
+            latency = Latency;
+	    fetching = false;
+	}
+    };
+    static std::map<uint64_t,InCacheRequest*>* BC_InCache;
+    static uint64_t BC_QID;
+    static int BC_block_size;
+    //-----------For Translation----------
+    static uint64_t BC_process_ptr;
+    static uint64_t BC_thread_ptr;
+
+    static uint64_t BC_vaddr;
+    static uint64_t BC_paddr;
+    static uint64_t BC_paddr_start;
+    static uint8_t* BC_back_storage_ptr;
+    //------------------------------------
+    static uint64_t BC_latency_cache;
+    static uint64_t BC_tick_cache;
+    static uint64_t BC_access_time_cache;
+    //@BCDRAM end
     /**
      * @ingroup api_serialize
      */
