@@ -207,6 +207,12 @@ exitImpl(SyscallDesc *desc, ThreadContext *tc, bool group, int status)
 
     //@BCDRAM start
     
+    for (auto &system: sys->systemList){
+	    if(!system->BC_InCache->empty()){
+		    system->BC_added_latency = true; //latency added surpass the simulation time
+		    activeContexts++;
+	    }
+    }
     //@BCDRAM end
     if (activeContexts == 0) {
         /**

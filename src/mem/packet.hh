@@ -332,10 +332,10 @@ class Packet : public Printable
     typedef MemCmd::Command Command;
 
     //@BCDRAM start
-    int BC_GetQID() const;
+    uint64_t  BC_GetQID() const;
     bool BC_IsNDP() const;
     void BC_SetNDP();
-    void BC_SetQID(int qid);
+    void BC_SetQID(uint64_t qid);
     //@BCDRAM end
     /// The command field of the packet.
     MemCmd cmd;
@@ -361,7 +361,7 @@ class Packet : public Printable
 
     //@BCDRAM start
     bool BC_isNDP=false;
-    int BC_qid=0;
+    uint64_t BC_qid=0;
     //@BCDRAM end
     /// True if the request targets the secure memory space.
     bool _isSecure;
@@ -850,11 +850,11 @@ class Packet : public Printable
 	if (req->BC_IsNDP() ){
             flags.set(VALID_ADDR);
 	    addr = req-> getVaddr();
-           // std::cout<< "isSecure:"<<req->isSecure()<<", Vaddr"<<addr<<", has valid address"<<flags.isSet(VALID_ADDR)<<std::endl;
 	    BC_SetNDP();
-	   // std::cout<<"BUILDING NDP packet\n";
+	    BC_SetQID(req->BC_GetQID() );
+            size = req->getSize();
+            flags.set(VALID_SIZE);
 	}
-
 	//@BCDRAM end
 
         /**
@@ -940,7 +940,10 @@ class Packet : public Printable
                 pkt->getHtmTransactionFailedInCacheRC()
             );
         }
-
+	//@BCDRAM start
+	BC_isNDP = pkt->BC_isNDP;//@BCDRAM
+	BC_qid = pkt->BC_qid;//@BCDRAM
+        //@BCDRAM end
         // should we allocate space for data, or not, the express
         // snoops do not need to carry any data as they only serve to
         // co-ordinate state changes
@@ -1019,6 +1022,8 @@ class Packet : public Printable
      */
     ~Packet()
     {
+	if(BC_IsNDP() )
+		std::cout<<"Is NDP destroying!!\n";
         deleteData();
     }
 

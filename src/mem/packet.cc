@@ -555,13 +555,13 @@ Packet::getHtmTransactionUid() const
 
 
 //@BCDRAM start
-int
+uint64_t
 Packet::BC_GetQID() const
 {
 	return BC_qid;
 }
 void
-Packet::BC_SetQID(int qid) 
+Packet::BC_SetQID(uint64_t qid) 
 {
 	BC_qid = qid;
 }

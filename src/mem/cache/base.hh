@@ -49,6 +49,9 @@
 #include <cassert>
 #include <cstdint>
 #include <string>
+//@BCDRAM start
+#include <map>
+//@BCDRAM end
 
 #include "base/addr_range.hh"
 #include "base/statistics.hh"
@@ -109,6 +112,7 @@ class BaseCache : public ClockedObject
     };
 
     //@BCDRAM start
+    std::map<uint64_t,PacketPtr>* BC_PktQueue;
     uint8_t* BC_translateAddr(uint64_t vaddr);
     void BC_processInCache();
     void BC_InCacheCheck();
@@ -294,7 +298,6 @@ class BaseCache : public ClockedObject
       protected:
         virtual bool recvTimingSnoopResp(PacketPtr pkt) override;
 
-        virtual bool tryTiming(PacketPtr pkt) override;
 
         virtual bool recvTimingReq(PacketPtr pkt) override;
 
@@ -305,6 +308,8 @@ class BaseCache : public ClockedObject
         virtual AddrRangeList getAddrRanges() const override;
 
       public:
+
+        virtual bool tryTiming(PacketPtr pkt) override;
 
         CpuSidePort(const std::string &_name, BaseCache *_cache,
                     const std::string &_label);

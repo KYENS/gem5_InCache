@@ -89,23 +89,27 @@ LoaderList &
 
 //@BCDRAM start
 struct InCacheRequest;
-std::map<uint64_t,Serializable::InCacheRequest*>* 
-Serializable::BC_InCache= new std::map<uint64_t,Serializable::InCacheRequest*>();
+std::vector<Serializable::InCacheRequest*>* 
+Serializable::BC_InCache= new std::vector<Serializable::InCacheRequest*>();
 uint64_t Serializable::BC_QID=0;
 
 int Serializable::BC_block_size=0;
 
+bool Serializable::BC_added_latency = false; //latency added surpass the simulation time
+bool Serializable::BC_port_busy=false;
 //-------------For Translation----------------
 uint64_t Serializable::BC_process_ptr=0;  // These two are for retrieving process
 uint64_t Serializable::BC_thread_ptr=0;   // and thread in SE mode
 
-uint64_t Serializable::BC_vaddr = 0;         //vaddr that we are using
 uint64_t Serializable::BC_paddr = 0;         //translated paddr
 uint64_t Serializable::BC_paddr_start = 0;  // paddr offset
 uint8_t* Serializable::BC_back_storage_ptr = new uint8_t;
 //---------------------------------------------------------------
+uint64_t Serializable::BC_vaddr = 0;         //vaddr that we are using
+uint64_t Serializable::BC_size_cache = 0;
 uint64_t Serializable::BC_latency_cache=0;
 uint64_t Serializable::BC_tick_cache=0;
+//----------To Record Access Num-----------------
 uint64_t Serializable::BC_access_time_cache=0;
 //@BCDRAM end
 Process::Loader::Loader()

@@ -328,7 +328,7 @@ class Request
 
   private:
     bool BC_isNDP=false;
-    int BC_qid=0;
+    uint64_t BC_qid=0;
 
     /**
      * The physical address of the request. Valid only if validPaddr
@@ -515,7 +515,7 @@ class Request
         _localAccessor = nullptr;
     }
     //@BCDRAM start
-    int
+    uint64_t
     BC_GetQID() const
     {
         return BC_qid;
@@ -528,7 +528,7 @@ class Request
     }
 
     void
-    BC_SetQID(int qid) 
+    BC_SetQID(uint64_t qid) 
     {
 	BC_qid = qid;
     }

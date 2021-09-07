@@ -412,6 +412,8 @@ Cache::recvTimingReq(PacketPtr pkt)
         // flag) is not providing writable (it is in Owned rather than
         // the Modified state), we know that there may be other Shared
         // copies in the system; go out and invalidate them all
+	if(pkt->BC_IsNDP())
+	   std::cout<<pkt->needsWritable()<<","<<pkt->responderHadWritable()<<std::endl;
         assert(pkt->needsWritable() && !pkt->responderHadWritable());
 
         // an upstream cache that had the line in Owned state

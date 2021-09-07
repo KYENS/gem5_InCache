@@ -58,6 +58,9 @@
 #include "base/logging.hh"
 #include "base/str.hh"
 
+//@BCDRAM start
+//#include "mem/packet.hh"
+//@BCDRAM end
 class IniFile;
 class SimObject;
 class SimObjectResolver;
@@ -230,34 +233,54 @@ class Serializable
 	uint64_t access_num;
 	uint64_t vaddr_start;
 	bool fetching;
+	bool running;
+	bool done;
 	uint64_t latency;
+	uint64_t qid;
+	uint64_t done_time;
 	InCacheRequest(){
+	    done_time = 0;
             access_num = 0;
 	    vaddr_start = 0;
             latency = 0;
 	    fetching = false;
+	    done = false;
+	    running = false;
+	    qid = 0;
 	}
-	InCacheRequest(uint64_t NumOfAccess, uint64_t VirtualAddr, uint64_t Latency){
+	InCacheRequest(uint64_t NumOfAccess, uint64_t VirtualAddr, uint64_t Latency, uint64_t QID){
             access_num = NumOfAccess;
 	    vaddr_start = VirtualAddr;
+	    done_time = 0;
             latency = Latency;
 	    fetching = false;
+	    done = false;
+	    running = false;
+	    qid = QID;
 	}
+//	void BC_SetPkt(PacketPtr pkt){
+  //          fetching = true;
+//	}
+
     };
-    static std::map<uint64_t,InCacheRequest*>* BC_InCache;
+    static bool BC_added_latency ;//= true; //latency added surpass the simulation time
+    static bool BC_port_busy;
+    static std::vector<InCacheRequest*>* BC_InCache;
     static uint64_t BC_QID;
     static int BC_block_size;
     //-----------For Translation----------
     static uint64_t BC_process_ptr;
     static uint64_t BC_thread_ptr;
 
-    static uint64_t BC_vaddr;
     static uint64_t BC_paddr;
     static uint64_t BC_paddr_start;
     static uint8_t* BC_back_storage_ptr;
-    //------------------------------------
+    //------------------------------------------------
     static uint64_t BC_latency_cache;
+    static uint64_t BC_size_cache;
+    static uint64_t BC_vaddr;
     static uint64_t BC_tick_cache;
+    //-----------To Record The Access Num-------------
     static uint64_t BC_access_time_cache;
     //@BCDRAM end
     /**

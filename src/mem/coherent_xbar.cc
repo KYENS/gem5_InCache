@@ -164,6 +164,9 @@ CoherentXBar::recvTimingReq(PacketPtr pkt, PortID cpu_side_port_id)
 	    }else{
 		    mem_side_port_id=0;
 	    }
+    }else if(name() == "system.membus" ){
+        if( pkt->BC_IsNDP()  )
+		    std::cout<<name()<<"::src/mem/coherent_bar.cci::"<<memSidePorts[mem_side_port_id]->name()<<","<<mem_side_port_id<</* ","<<pkt->getAddrRange()<<*/"\n";
     }
     //@BCDRAM
     // test if the crossbar should be considered occupied for the current
@@ -173,6 +176,10 @@ CoherentXBar::recvTimingReq(PacketPtr pkt, PortID cpu_side_port_id)
         DPRINTF(CoherentXBar, "%s: src %s packet %s BUSY\n", __func__,
                 src_port->name(), pkt->print());
         return false;
+    }
+    if(name() == "system.membus" ){
+        if( pkt->BC_IsNDP()  )
+		    std::cout<<name()<<"::src/mem/coherent_bar.ccii::"<<memSidePorts[mem_side_port_id]->name()<<","<<mem_side_port_id<</* ","<<pkt->getAddrRange()<<*/"\n";
     }
 
     DPRINTF(CoherentXBar, "%s: src %s packet %s\n", __func__,

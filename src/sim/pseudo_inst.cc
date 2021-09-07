@@ -196,13 +196,15 @@ m5sum(ThreadContext *tc, uint64_t a, uint64_t b, uint64_t c,
 {
     DPRINTF(PseudoInst, "PseudoInst::m5sum(%#x, %#x, %#x, %#x, %#x, %#x)\n",
             a, b, c, d, e, f);
+    Serializable::BC_size_cache = b;
     Serializable::BC_vaddr = a;
     Serializable::BC_latency_cache += f;
     Serializable::BC_access_time_cache ++;
-    Serializable::BC_InCache-> insert ( pair<uint64_t, Serializable::InCacheRequest* > ( Serializable::BC_QID,  new Serializable::InCacheRequest(b,a,f) ));
-    Serializable::BC_QID++;
+    Serializable::BC_InCache->push_back(new Serializable::InCacheRequest(b,a,f,Serializable::BC_QID ) );
+   // Serializable::BC_QID++;
     std::cout<<"setting BC_VADDR = "<<Serializable::BC_vaddr <<"\n";
     std::cout<<"setting BC_LATENCY_CACHE = "<< Serializable::BC_latency_cache <<"\n";
+    std::cout<<"setting BC_SIZE_CACHE (byte)  = "<< Serializable::BC_size_cache <<"\n";
     std::cout<<"setting BC_ACCESS_TIME_CACHE = "<<Serializable::BC_access_time_cache  <<"\n";
     return a + b + c + d + e + f;
 }

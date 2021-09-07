@@ -5,8 +5,9 @@
 #include <iostream>
 #include "../../include/gem5/m5ops.h"
 #include <algorithm>
-#define TEST_NUM 255
+#define TEST_NUM 10
 size_t *array;
+size_t *array2;
 void print_array10(){
 	for (int i=0;i<10;i++)
 		std::cout<<array[i]<<',';
@@ -17,9 +18,11 @@ void print_array10(){
 }
 int main(){
 	array=(size_t*) calloc (TEST_NUM,sizeof(size_t) );
+	array2=(size_t*) calloc (TEST_NUM,sizeof(size_t) );
 	for(int i=0;i<TEST_NUM;i++)
 		array[i]=TEST_NUM-i;
 	uintptr_t array_ptr = (size_t) ( (size_t*) array );
+	uintptr_t array_ptr2 = (size_t) ( (size_t*) array2 );
 
 	std::cout << "array addr: " << array << std::endl;
 	std::cout << "array pointer : " << array_ptr << std::endl;
@@ -30,8 +33,10 @@ int main(){
 	//sort the array
 	std::sort(array, array+TEST_NUM);
 	m5_reset_stats(0,0);
-	m5_sum((uint64_t) array_ptr,sizeof(size_t)*TEST_NUM,2,3,4,109900);
+	m5_sum((uint64_t) array_ptr,sizeof(size_t)*TEST_NUM,2,3,4,109900000000);
+//	m5_sum((uint64_t) array_ptr2,sizeof(size_t)*TEST_NUM,2,3,4,109900);
 	//prints first 10 & last 10 elements in the array
+//	std::cout<<"Size:"<<sizeof(size_t)*TEST_NUM<<std::endl;
 	print_array10();
 
 

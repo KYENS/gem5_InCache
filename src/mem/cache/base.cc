@@ -130,6 +130,7 @@ BaseCache::BaseCache(const BaseCacheParams *p, unsigned blk_size)
         prefetcher->setCache(this);
     //@BCDRAM start
     BC_InCacheCheck();
+    BC_PktQueue = new std::map<uint64_t, PacketPtr>();
     //@BCDRAM end
 }
 
@@ -142,7 +143,44 @@ BaseCache::~BaseCache()
 void
 BaseCache::BC_InCacheCheck()
 {
-    std::cout<<"\nBC in cache checking \n";
+//    std::cout<<"\nBC in cache checking \n";
+    int access_qid=0;
+    std::vector<InCacheRequest*>::iterator it;
+    if(name() == "system.S2cache" && ! BC_port_busy){
+        for(it=BC_InCache->begin(); it!=BC_InCache->end() ; it++){
+            if(it == BC_InCache->end() )
+                  break;
+            if( (*it)->running && (*it)->done_time < curTick() ){
+                BC_InCache->erase(it);  // check if is ndp is done running
+		break;
+	    }
+            if( (*it)->fetching){
+	        std::cout<<name()<<endl;
+	         Request::Flags flags = 0x00000001 | 0x00000002 | 0x00000004 | 0x00000008 | 0x00000010 | 0x00000020 | 0x10000000;
+	         RequestPtr req = std::make_shared<Request>( (*it)->vaddr_start +=64 , 8, flags, 0,0,0); // paddr, size, flag, requestor_id, pc , threac_ctx_id
+	         req->setPaddr(0x12345680);
+	         req->BC_SetNDP();
+	         req->BC_SetQID((*it)->qid);
+	         PacketPtr pkt = Packet::createRead(req);
+	         //pkt->setCacheResponding();
+	         uint8_t *data = new uint8_t[64];  assert(data);
+	         uint64_t rc = 0lu;   memcpy (data, &rc, 64);
+	         pkt->dataDynamic<uint8_t>(data);
+                 std::cout<<"memside port send req:"<<(*it)->access_num<<", Addr:"<<pkt->getAddr()<<", Latency:"<<(*it)->latency <<std::endl;
+	         if (cpuSidePort.tryTiming(pkt)){ 
+	             memSidePort.sendTimingReq(pkt);
+                     (*it)->access_num -=8;
+		     BC_port_busy = true;
+		     if((*it)->access_num==0){
+		        (*it)->fetching = false;//BC_InCache->erase(it);
+		       // (*it)->running = true;
+		       // (*it)->done_timing = curTick() + (*it)->latency;
+		    }
+		 }
+           	 break;
+	     }
+        }
+    }
     schedule(BC_InCacheCheckEvent, curTick()+10 );
 }
 //@BCDRAM end
@@ -425,7 +463,16 @@ BaseCache::recvTimingResp(PacketPtr pkt)
     //@BCDRAM start
     if(pkt->BC_IsNDP() )
     {
+        std::vector<InCacheRequest*>::iterator it;
+	BC_port_busy = false;
+        for(it=BC_InCache->begin();it!=BC_InCache->end();it++)
+            if( (*it)->qid == pkt->BC_GetQID() )
+	        break;
+        (*it)->running = true;
+	(*it)->done_time = curTick() + (*it)->latency;
+//	BC_InCache->erase(it);
         std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingResp()->NDPpkt received\n";
+	std::cout<<"////////////////////////////////////////////////////////////////////////////////////////////////\n";
 	return;
     }
     //@BCDRAM end
@@ -1774,7 +1821,8 @@ BaseCache::sendMSHRQueuePacket(MSHR* mshr)
         // there will be a follow-up write packet as well.
         pkt->setSatisfied();
     }
-
+    if(pkt->BC_IsNDP())
+        std::cout<<pkt->getAddr()<<std::endl;
     if (!memSidePort.sendTimingReq(pkt)) {
         // we are awaiting a retry, but we
         // delete the packet and will be creating a new packet
@@ -2381,13 +2429,19 @@ BaseCache::CpuSidePort::recvTimingReq(PacketPtr pkt)
     //@BCDRAM start
     if (pkt->BC_IsNDP() ){
 	if(name()=="system.cpu.dcache.cpu_side_port"){
-            bool M5_VAR_USED success = cache->memSidePort.sendTimingReq(pkt);
             std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L1 DCACHE"<<std::endl;
+            bool M5_VAR_USED success = cache->memSidePort.sendTimingReq(pkt);
             assert(success);
 	}else{
 	    
-            cache->recvTimingReq(pkt);
-            std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L2 SCACHE"<<std::endl;
+           // cache->recvTimingReq(pkt);
+	   // cache->BC_InCache->find(pkt->BC_GetQID() )->BC_SetPkt(pkt);
+	   std::vector<InCacheRequest*>::iterator it;
+	   for(it=cache->BC_InCache->begin();it!=cache->BC_InCache->end();it++)
+               if( (*it)->qid == pkt->BC_GetQID() )
+	           break;
+	   (*it)->fetching = true;
+           std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L2 SCACHE, Size:"<<pkt->getSize()<<", Addr:"<<pkt->getAddr()<<", QID:"<<pkt->BC_GetQID()<<std::endl;
 	}	
         return true;
     }   

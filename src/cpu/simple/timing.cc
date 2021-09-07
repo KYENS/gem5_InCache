@@ -57,7 +57,9 @@
 #include "sim/faults.hh"
 #include "sim/full_system.hh"
 #include "sim/system.hh"
-
+//@BCDRAM start
+#include "sim/sim_exit.hh"
+//@BCDRAM end
 using namespace std;
 using namespace TheISA;
 
@@ -696,7 +698,7 @@ TimingSimpleCPU::BC_ndpCheck()
 	std::cout<<"curTick()-"<<curTick()<<"-src/cpu/simple/timing.cc::BC_ndpCheck()->CHECKING and SENDING special packet!!\n";
 	//Create Request to send NDP request to cache / DRAM
         Addr addr = BC_vaddr;
-        unsigned size = 8;  //8 Bytes, the size actually doesn't matter
+        unsigned size = thread->dtb->BC_size_cache;  //8 Bytes, the size actually doesn't matter
         Request::Flags flags =
 	0x00000001 | 0x00000002 | 0x00000004 | 0x00000008 | 0x00000010 | 0x00000020 | 0x10000000;
 
@@ -706,6 +708,8 @@ TimingSimpleCPU::BC_ndpCheck()
                 addr, size, flags, dataRequestorId(), pc, thread->contextId());
         req->taskId(taskId());
 	req->BC_SetNDP();
+	req->BC_SetQID(thread->dtb->BC_QID);
+	thread->dtb->BC_QID++;
 	//Create Packet
 	uint8_t *data = new uint8_t[size];
 	assert(data);
@@ -719,6 +723,9 @@ TimingSimpleCPU::BC_ndpCheck()
 	 
 //	thread->dtb->BC_flag=false;
     }
+    if(thread->dtb->BC_added_latency)
+        if(thread->dtb->BC_InCache->empty() )
+		exitSimLoop("Exiting with In Cache Workload done\n");
     schedule(BC_ndpEvent, nextCycle());
 
 }
