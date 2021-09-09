@@ -144,21 +144,21 @@ void
 BaseCache::BC_InCacheCheck()
 {
 //    std::cout<<"\nBC in cache checking \n";
-    int access_qid=0;
     std::vector<InCacheRequest*>::iterator it;
     if(name() == "system.S2cache" && ! BC_port_busy){
         for(it=BC_InCache->begin(); it!=BC_InCache->end() ; it++){
             if(it == BC_InCache->end() )
                   break;
             if( (*it)->running && (*it)->done_time < curTick() ){
+		std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::BC_InCacheCheck()//QID "<<(*it)->qid <<" Process Done\n";
                 BC_InCache->erase(it);  // check if is ndp is done running
 		break;
 	    }
             if( (*it)->fetching){
-	        std::cout<<name()<<endl;
+	         //std::cout<<name()<<endl;
 	         Request::Flags flags = 0x00000001 | 0x00000002 | 0x00000004 | 0x00000008 | 0x00000010 | 0x00000020 | 0x10000000;
 	         RequestPtr req = std::make_shared<Request>( (*it)->vaddr_start +=64 , 8, flags, 0,0,0); // paddr, size, flag, requestor_id, pc , threac_ctx_id
-	         req->setPaddr(0x12345680);
+	         req->setPaddr(BC_translateAddr((*it)-> vaddr_start ) );//0x12345680);
 	         req->BC_SetNDP();
 	         req->BC_SetQID((*it)->qid);
 	         PacketPtr pkt = Packet::createRead(req);
@@ -166,18 +166,19 @@ BaseCache::BC_InCacheCheck()
 	         uint8_t *data = new uint8_t[64];  assert(data);
 	         uint64_t rc = 0lu;   memcpy (data, &rc, 64);
 	         pkt->dataDynamic<uint8_t>(data);
-                 std::cout<<"memside port send req:"<<(*it)->access_num<<", Addr:"<<pkt->getAddr()<<", Latency:"<<(*it)->latency <<std::endl;
+                 //std::cout<<"memside port send req:"<<(*it)->access_num<<", Addr:"<<pkt->getAddr()<<", Latency:"<<(*it)->latency <<std::endl;
 	         if (cpuSidePort.tryTiming(pkt)){ 
-	             memSidePort.sendTimingReq(pkt);
-                     (*it)->access_num -=8;
-		     BC_port_busy = true;
-		     if((*it)->access_num==0){
-		        (*it)->fetching = false;//BC_InCache->erase(it);
-		       // (*it)->running = true;
-		       // (*it)->done_timing = curTick() + (*it)->latency;
-		    }
+	             if(memSidePort.sendTimingReq(pkt)){
+			 BC_port_busy=true;    
+                         (*it)->access_num -=8;
+		         if((*it)->access_num==0)
+		            (*it)->fetching = false;//BC_InCache->erase(it);
+		     }//else{
+             //           std::cout<<"@NCTU_ED520::sendTimingReq Failed\n";
+	//	     }
+   
 		 }
-           	 break;
+		 break;
 	     }
         }
     }
@@ -468,11 +469,13 @@ BaseCache::recvTimingResp(PacketPtr pkt)
         for(it=BC_InCache->begin();it!=BC_InCache->end();it++)
             if( (*it)->qid == pkt->BC_GetQID() )
 	        break;
-        (*it)->running = true;
-	(*it)->done_time = curTick() + (*it)->latency;
-//	BC_InCache->erase(it);
-        std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingResp()->NDPpkt received\n";
-	std::cout<<"////////////////////////////////////////////////////////////////////////////////////////////////\n";
+//        std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingResp() //QID "<<(*it)->qid <<" Fetched data from DRAM\n";
+	if( !(*it)->fetching && !(*it)->running ){
+	    (*it)->running = true;
+	    (*it)->done_time = curTick() + (*it)->latency;
+	    std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingResp() //QID "<<(*it)->qid <<" All fetched data from DRAM\n";
+	}
+//	std::cout<<"////////////////////////////////////////////////////////////////////////////////////////////////\n";
 	return;
     }
     //@BCDRAM end
@@ -609,28 +612,28 @@ BaseCache::recvTimingResp(PacketPtr pkt)
     delete pkt;
 }
 //@BCDRAM start
-uint8_t*
+uint64_t
 BaseCache::BC_translateAddr(uint64_t vaddr)
 {
-    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->vaddr:"<<vaddr<<"\n";
+ //   std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->vaddr:"<<vaddr<<"\n";
     //SimpleThread* tc = (SimpleThread*) ( vaddr);//std::make_shared<Request>();
     RequestPtr req = std::make_shared<Request>();
     req->setPaddr(vaddr);
 
     ((SimpleThread*) BC_thread_ptr)->dtb->translateTiming(req,NULL,NULL,BaseTLB::Execute);
-    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->paddr:"<<req->getPaddr()<<"\n";
-    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->BC_back_storage_ptr:"<<(uint64_t)BC_back_storage_ptr<<"\n";
-    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->BC_paddr_start:"<<BC_paddr_start<<"\n";
+//    std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::translateAddr()  //vaddr:"<<vaddr<<"-> paddr:"<<req->getPaddr()<<"\n";
+//    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->BC_back_storage_ptr:"<<(uint64_t)BC_back_storage_ptr<<"\n";
+//    std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"-src/mem/cache/base.cc::translateAddr()->BC_paddr_start:"<<BC_paddr_start<<"\n";
     uint8_t* host_ptr = BC_back_storage_ptr +req->getPaddr() - BC_paddr_start ;
-    for(int i=0;i<400;i++){
+/*    for(int i=0;i<400;i++){
 	if(i%8==0)
 	    printf(" %x %d\n",host_ptr[i],i);
      	else
 	    printf(" %x",( host_ptr[i]==0 )?0:host_ptr[i]);
     }
-
-    std::cout<<"curTick()-"<<curTick()<<"-src/mem/cache/base.cc::translateAddr()->host_ptr:"<<(uint64_t)host_ptr<<", "<<host_ptr[0]<<", "<<host_ptr[1]<<"\n";
-    return host_ptr;
+*/
+//    std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-src/mem/cache/base.cc::translateAddr()->host_ptr:"<<(uint64_t)host_ptr<<", "<<host_ptr[0]<<", "<<host_ptr[1]<<"\n";
+    return req->getPaddr();
 }
 
 #include <algorithm>
@@ -2429,19 +2432,16 @@ BaseCache::CpuSidePort::recvTimingReq(PacketPtr pkt)
     //@BCDRAM start
     if (pkt->BC_IsNDP() ){
 	if(name()=="system.cpu.dcache.cpu_side_port"){
-            std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L1 DCACHE"<<std::endl;
+            //std::cout<<"@NCTU_ED520:curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L1 DCACHE"<<std::endl;
             bool M5_VAR_USED success = cache->memSidePort.sendTimingReq(pkt);
             assert(success);
 	}else{
-	    
-           // cache->recvTimingReq(pkt);
-	   // cache->BC_InCache->find(pkt->BC_GetQID() )->BC_SetPkt(pkt);
 	   std::vector<InCacheRequest*>::iterator it;
 	   for(it=cache->BC_InCache->begin();it!=cache->BC_InCache->end();it++)
                if( (*it)->qid == pkt->BC_GetQID() )
 	           break;
 	   (*it)->fetching = true;
-           std::cout<<"curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq()->L2 SCACHE, Size:"<<pkt->getSize()<<", Addr:"<<pkt->getAddr()<<", QID:"<<pkt->BC_GetQID()<<std::endl;
+           std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-"<<name()<<"::src/mem/cache/base.cc::recvTimingReq() \n//SmartCache Receives request from CPU, Size:"<<pkt->getSize()<<", Addr:"<<pkt->getAddr()<<", QID:"<<pkt->BC_GetQID()<<std::endl;
 	}	
         return true;
     }   

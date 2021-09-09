@@ -110,6 +110,9 @@ void Ramulator::sendResponse() {
     long addr = resp_queue.front()->getAddr();
     if(addr){/*DO NOTHING. For avoid error unused-variable*/}
     if (port.sendTimingResp(resp_queue.front())){
+	//@BCDRAM start
+//	if (resp_queue.front()->BC_IsNDP()) std::cout<<"@NCTU_ED520::curTick()-"<<curTick() <<"-"<<name()<<"::src/mem/ramulator.cc::sendTimingResp //DRAM Controller got the data and sends it back\n";
+	 //@BCDRAM end
         DPRINTF(Ramulator, "Response to %ld sent.\n", addr);
         resp_queue.pop_front();
         if (resp_queue.size() && !send_resp_event.scheduled())
@@ -152,7 +155,7 @@ void Ramulator::recvFunctional(PacketPtr pkt) {
 
 bool Ramulator::recvTimingReq(PacketPtr pkt) {
     //@BCDRAM start
-    if (pkt->BC_IsNDP()) std::cout<<"curTick()-"<<curTick() <<"-src/mem/ramulator.cc::recvTimingReq\n";
+//    if (pkt->BC_IsNDP()) std::cout<<"@NCTU_ED520::curTick()-"<<curTick() <<"-"<<name()<<"::-src/mem/ramulator.cc::recvTimingReq   //QID "<<pkt->BC_GetQID()<<" DRAM Controller received request\n";
     //@BCDRAM end
     // we should never see a new request while in retry
     assert(!req_stall);

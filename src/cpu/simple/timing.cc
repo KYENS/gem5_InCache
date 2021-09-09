@@ -694,8 +694,7 @@ TimingSimpleCPU::BC_ndpCheck()
     if( thread->dtb->BC_access_time_cache != 0 )
     {
     // announce that the flag is detected by the CPU
-	std::cout<<"\n///////////////////////////////////////////////////////////////////////////////\n";
-	std::cout<<"curTick()-"<<curTick()<<"-src/cpu/simple/timing.cc::BC_ndpCheck()->CHECKING and SENDING special packet!!\n";
+	std::cout<<"@NCTU_ED520::curTick()-"<<curTick()<<"-src/cpu/simple/timing.cc::BC_ndpCheck()-//Sending special packet QID - "<<thread->dtb->BC_QID <<" !!\n";
 	//Create Request to send NDP request to cache / DRAM
         Addr addr = BC_vaddr;
         unsigned size = thread->dtb->BC_size_cache;  //8 Bytes, the size actually doesn't matter

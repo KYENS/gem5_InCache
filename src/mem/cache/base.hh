@@ -113,7 +113,7 @@ class BaseCache : public ClockedObject
 
     //@BCDRAM start
     std::map<uint64_t,PacketPtr>* BC_PktQueue;
-    uint8_t* BC_translateAddr(uint64_t vaddr);
+    uint64_t BC_translateAddr(uint64_t vaddr);
     void BC_processInCache();
     void BC_InCacheCheck();
     EventFunctionWrapper BC_InCacheCheckEvent;

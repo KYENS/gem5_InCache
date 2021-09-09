@@ -189,7 +189,10 @@ BaseXBar::Layer<SrcType, DstType>::tryTiming(SrcType* src_port)
     // for a retry from the peer
     if (state == BUSY || waitingForPeer != NULL) {
         // the port should not be waiting already
-	std::cout<<"--"<<name()<<"state :"<<state<<", waiting for peer: "<<waitingForPeer<<std::endl;
+	if(src_port->name() == "system.membus.cpu_side_port[1]" ){
+//	    std::cout<<"--"<<name()<<"--"<<src_port->name()<<",state :"<<state<<", waiting for peer: "<<waitingForPeer<<std::endl;
+	    return false;
+	}
         assert(std::find(waitingForLayer.begin(), waitingForLayer.end(),
                          src_port) == waitingForLayer.end());
 

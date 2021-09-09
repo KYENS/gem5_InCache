@@ -202,10 +202,12 @@ m5sum(ThreadContext *tc, uint64_t a, uint64_t b, uint64_t c,
     Serializable::BC_access_time_cache ++;
     Serializable::BC_InCache->push_back(new Serializable::InCacheRequest(b,a,f,Serializable::BC_QID ) );
    // Serializable::BC_QID++;
+    std::cout<<"\n///////////////////////////////////////////////////////////////////////////////\n";
     std::cout<<"setting BC_VADDR = "<<Serializable::BC_vaddr <<"\n";
     std::cout<<"setting BC_LATENCY_CACHE = "<< Serializable::BC_latency_cache <<"\n";
     std::cout<<"setting BC_SIZE_CACHE (byte)  = "<< Serializable::BC_size_cache <<"\n";
     std::cout<<"setting BC_ACCESS_TIME_CACHE = "<<Serializable::BC_access_time_cache  <<"\n";
+    std::cout<<"///////////////////////////////////////////////////////////////////////////////\n";
     return a + b + c + d + e + f;
 }
 
